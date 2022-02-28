@@ -13,4 +13,6 @@ xG_Stats_1_df = pd.read_csv('xG_Stats_1.csv')
 
 st.title('NBA Project: Streamlit page for the Programming Project')
 
+sec = st.sidebar.radio('Sections:', ['Data cleaning', 'LeBron James exploration and analysis', 'Predictive model for LeBron James', 'Season 2020/2021 exploration and analysis', 'Predictive model for season 2020/2021'])
+
 
