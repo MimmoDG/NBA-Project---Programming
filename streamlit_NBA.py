@@ -6,8 +6,11 @@ from sklearn.tree import DecisionTreeClassifier
 import sklearn.metrics as skm
 import time
 
+#import the datasets
+
+Adv_Stats_1_df = pd.read_csv('Adv_Stats_1.csv')
+xG_Stats_1_df = pd.read_csv('xG_Stats_1.csv')
+
+st.title('NBA Project: Streamlit page for the Programming Project')
 
 
-st.header('NBA Project: Streamlit page for the Programming Project')
-st.write('Siamo molto contenti')
-#pd.read_csv('Nome dataset già pulito in csv')
