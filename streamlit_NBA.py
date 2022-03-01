@@ -14,7 +14,19 @@ LeBron_Injuries_df = pd.read_csv('LeBron_Injuries.csv')
 
 st.title('NBA Project: Streamlit page for the Programming Project')
 
-sec = st.sidebar.radio('Sections:', ['Data cleaning', 'LeBron James exploration and analysis', 'Predictive model for LeBron James', 'Season 2020/2021 exploration and analysis', 'Predictive model for season 2020/2021'])
+sec = st.sidebar.radio('Sections:', ['Data cleaning', 'LeBron James exploration and analysis', 'Predictive model for LeBron James', 'Season 2020/2021 exploration and analysis', 'Predictive model for Season 2020/2021'])
 
 if sec == 'Data cleaning': 
+     st.header('Data cleaning')
 
+if sec == 'LeBron James exploration and analysis':
+    st.header('LeBron James exploration and analysis')
+
+if sec == 'Predictive model for LeBron James':
+    st.header('Predictive model for LeBron James')
+
+if sec == 'Season 2020/2021 exploration and analysis':
+    st.header('Season 2020/2021 exploration and analysis')
+
+if sec == 'Predictive model for Season 2020/2021':
+    st.header('Predictive model for Season 2020/2021')
