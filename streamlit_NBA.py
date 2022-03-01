@@ -10,6 +10,7 @@ import time
 
 Adv_Stats_1_df = pd.read_csv('Adv_Stats_1.csv')
 xG_Stats_1_df = pd.read_csv('xG_Stats_1.csv')
+LeBron_Injuries_df = pd.read_csv('LeBron_Injuries.csv')
 
 st.title('NBA Project: Streamlit page for the Programming Project')
 
