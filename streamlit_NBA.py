@@ -26,6 +26,15 @@ sec = st.sidebar.radio('Sections:', ['Data cleaning', 'LeBron James exploration 
 if sec == 'Data cleaning': 
      st.header('Data cleaning')
 
+     st.write("For this project I choose to develop two different topics:")
+     st.markdown('''
+            - LeBron James Analysis: an analysis where I studied his career trends and predicted some record he could break until he will retire, like the current 'All-Time Point Leader';
+            - Season 2020/2021 Analysis: an analysis where I studied stats about the season and provided interesting models to reach specific results.
+
+            I used two different datasets for each topic 
+            
+            ''')
+
 if sec == 'LeBron James exploration and analysis':
     st.header('LeBron James exploration and analysis')
 
