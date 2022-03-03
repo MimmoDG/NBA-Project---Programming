@@ -17,10 +17,12 @@ Adv_Stats_1_df = pd.read_csv('Adv_Stats_1.csv')
 xG_Stats_1_df = pd.read_csv('xG_Stats_1.csv')
 LeBron_Injuries_df = pd.read_csv('LeBron_Injuries.csv')
 
-HtmlFile = open("https://www.basketball-reference.com/players/j/jamesle01.html", 'r', encoding='utf-8')
-LBJ_xG_Stats = HtmlFile.read() 
-print(LBJ_xG_Stats)
-components.html(LBJ_xG_Stats)
+LBJ_XGStats_df = pd.read_html('https://www.basketball-reference.com/players/j/jamesle01.html')
+#open("https://www.basketball-reference.com/players/j/jamesle01.html", 'r', encoding='utf-8')
+#LBJ_xG_Stats = HtmlFile.read() 
+#print(LBJ_xG_Stats)
+#components.html(LBJ_xG_Stats)
+print(LBJ_XGStats_df)
 
 st.title('NBA Project: Streamlit page for the Programming Project')
 
@@ -47,11 +49,16 @@ if sec == 'Data cleaning':
             st.download_button('Download CSV', original_xGStats_df.to_csv(index=False))
             st.write('It contains all the usual stats provided to analyse the whole season 2020/2021, like points, rebounds, assists and so on.')
 
+            #spiegare variabili che ci sono nel dataset
+
     with st.expander('The Advanced Stats dataset'):
             st.write('The dataset is available on Basketball Reference at https://www.basketball-reference.com/leagues/NBA_2021_advanced.html. It is the first table in the web page and before turning the html dataframe into csv file I had to erase and clean some stats and some inaccuracies. You can download the raw data here.')
             st.download_button('Download CSV', original_AdvStats_df.to_csv(index=False))
             st.write('It contains specific stats based on advanced analysis about the whole season 2020/2021, and unlike the previous stats these are established only when the season is finished. Some of these stats are win share, box plus minus and others.')
 
+            #spiegare variabili che ci sono nel dataset
+
+    #aggiungere with con i due dataset di LeBron (xG e Tot)
 
 if sec == 'LeBron James exploration and analysis':
     st.header('LeBron James exploration and analysis')
