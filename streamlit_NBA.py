@@ -21,7 +21,7 @@ LBJ_Stats_df = pd.read_html('https://www.basketball-reference.com/players/j/jame
 LBJ_xGStats_df = pd.DataFrame(LBJ_Stats_df[0])
 LBJ_TotStats_df = pd.DataFrame(LBJ_Stats_df[2])
 
-st.title('NBA Project: Streamlit page for the Programming Project')
+st.title('NBA Project: Analysis and Prediction about LeBron James Career and Season 2020/2021')
 
 sec = st.sidebar.radio('Sections:', ['Data cleaning', 'LeBron James exploration and analysis', 'Predictive model for LeBron James', 'Season 2020/2021 exploration and analysis', 'Predictive model for Season 2020/2021'])
 
