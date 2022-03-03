@@ -17,12 +17,9 @@ Adv_Stats_1_df = pd.read_csv('Adv_Stats_1.csv')
 xG_Stats_1_df = pd.read_csv('xG_Stats_1.csv')
 LeBron_Injuries_df = pd.read_csv('LeBron_Injuries.csv')
 
-LBJ_XGStats_df = pd.read_html('https://www.basketball-reference.com/players/j/jamesle01.html')
-#open("https://www.basketball-reference.com/players/j/jamesle01.html", 'r', encoding='utf-8')
-#LBJ_xG_Stats = HtmlFile.read() 
-#print(LBJ_xG_Stats)
-#components.html(LBJ_xG_Stats)
-print(LBJ_XGStats_df)
+LBJ_Stats_df = pd.read_html('https://www.basketball-reference.com/players/j/jamesle01.html')
+LBJ_xGStats_df = pd.DataFrame(LBJ_Stats_df[0])
+LBJ_TotStats_df = pd.DataFrame(LBJ_Stats_df[2])
 
 st.title('NBA Project: Streamlit page for the Programming Project')
 
@@ -44,6 +41,17 @@ if sec == 'Data cleaning':
             - Season 2020/2021 advanced stats. 
             ''')
 
+    #aggiungere with con i due dataset di LeBron (xG e Tot)
+    with st.expander('The LeBron James Career dataset based on Per Game stats for season'):
+            st.write('The dataset is available on Basketball Reference at https://www.basketball-reference.com/players/j/jamesle01.html. It is the first table in the web page and it is an html file because LeBron is still playing, then his stats are increasing and changing day by day.')
+            st.download_button('Download CSV', LBJ_xGStats_df.to_csv(index=False))
+            st.write('It contains all the stats during the whole career of LeBron James taken with the per game stats per season and it is still in update because he is still playing.')
+
+    with st.expander('The LeBron James Career dataset based on Totals stats for season'):
+            st.write('The dataset is available on Basketball Reference at https://www.basketball-reference.com/players/j/jamesle01.html. It is the third table in the web page and it is an html file because LeBron is still playing, then his stats are increasing and changing day by day.')
+            st.download_button('Download CSV', LBJ_TotStats_df.to_csv(index=False))
+            st.write('It contains all the stats during the whole career of LeBron James taken with the totals per season and it is still in update because he is still playing.')
+
     with st.expander('The Per Game Stats dataset'):
             st.write('The dataset is available on Basketball Reference at https://www.basketball-reference.com/leagues/NBA_2021_per_game.html. It is the first table in the web page and before turning the html dataframe into csv file I had to erase and clean some stats and some inaccuracies. You can download the raw data here.')
             st.download_button('Download CSV', original_xGStats_df.to_csv(index=False))
@@ -58,7 +66,7 @@ if sec == 'Data cleaning':
 
             #spiegare variabili che ci sono nel dataset
 
-    #aggiungere with con i due dataset di LeBron (xG e Tot)
+    
 
 if sec == 'LeBron James exploration and analysis':
     st.header('LeBron James exploration and analysis')
