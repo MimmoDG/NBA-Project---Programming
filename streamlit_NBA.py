@@ -102,8 +102,13 @@ if sec == 'Data cleaning':
             st.write('It contains specific stats based on advanced analysis about the whole season 2020/2021, and unlike the previous stats these are established only when the season is finished. Some of these stats are win share, box plus minus and others.')
 
             #spiegare variabili che ci sono nel dataset
-
     
+    #aggiungere dataset finali o fare le modifiche al momento e spiegarle
+    #scrivere questa parte con markdown
+    #vanno aggiunti anche altri expander coi dataset finali
+    #dopo aver inserito i dataset finali e il download button con i csv è finita la parte di data cleaning 
+    #capire bene come fare le modifiche al momento e renderle visibili su streamlit
+
 
 if sec == 'LeBron James exploration and analysis':
     st.header('LeBron James exploration and analysis')
