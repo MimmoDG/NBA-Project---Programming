@@ -8,7 +8,7 @@ import sklearn.metrics as skm
 import time
 import streamlit.components.v1 as components
 
-#import the datasets
+#import the initials datasets
 
 original_xGStats_df = pd.read_csv('df_xGStats.csv')
 original_AdvStats_df = pd.read_csv('df_AdvStats.csv')
@@ -20,6 +20,8 @@ LeBron_Injuries_df = pd.read_csv('LeBron_Injuries.csv')
 LBJ_Stats_df = pd.read_html('https://www.basketball-reference.com/players/j/jamesle01.html')
 LBJ_xGStats_df = pd.DataFrame(LBJ_Stats_df[0])
 LBJ_TotStats_df = pd.DataFrame(LBJ_Stats_df[2])
+
+#import the finals datasets
 
 st.title('NBA Project: Analysis and Prediction about LeBron James Career and Season 2020/2021')
 
@@ -70,6 +72,21 @@ if sec == 'Data cleaning':
 
 if sec == 'LeBron James exploration and analysis':
     st.header('LeBron James exploration and analysis')
+
+    x = st.selectbox('Choose a Stat', LBJ_xGStats_df.columns.tolist())
+    ms = LBJ_xGStats_df[x].max()
+    a = LBJ_xGStats_df[LBJ_xGStats_df[x]==ms].Season
+    st.write(a, 'The max for this stat is: ', ms)
+
+    Season = list(LBJ_xGStats_df['Season'])
+    Peppino = list(LBJ_xGStats_df[x])
+    fig = plt.figure(figsize=(10, 6))
+    plt.plot(Season, Peppino, '-o')
+    plt.title('LeBron ' + x + ' averages in every season')
+    plt.xlabel('Seasons')
+    plt.ylabel(x)
+    plt.xticks(rotation=45)
+    st.pyplot(fig)
 
 if sec == 'Predictive model for LeBron James':
     st.header('Predictive model for LeBron James')
