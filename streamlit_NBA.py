@@ -55,8 +55,8 @@ if sec == 'Data cleaning':
             st.download_button('Download CSV', LBJ_TotStats_df.to_csv(index=False))
             st.write('It contains all the stats during the whole career of LeBron James taken with the totals per season and it is still in update because he is still playing.')
 
-            #explanation of variables in the datasets
-            st.write('''
+    #explanation of variables in the datasets
+    st.write('''
             In these datasets, there are the same stats explaining the LeBron James's style of play and these are also the usual stats used to analise different players.
             First of all, the two raws datasets contain 24 rows and 30 coloumns each.
             The rows represent the different seasons he has played through his career and the last 4 shows his career trends and his trends concerning the three different teams he has played for.
