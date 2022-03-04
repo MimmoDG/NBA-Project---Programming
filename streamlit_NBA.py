@@ -35,7 +35,9 @@ if sec == 'Data cleaning':
             - LeBron James Analysis: an analysis where I studied his career trends and predicted some record he could break until he will retire, like the current 'All-Time Point Leader';
             - Season 2020/2021 Analysis: an analysis where I studied stats about the season and provided interesting models to reach specific results.
 
-            I used two different datasets for each topic. For the LeBron James analysis, I evaluated:
+            In this way, I conducted different surveys about the same subject analysing two specific topics. In the same time, I examined the two topics focusing in particular datasets.
+            To carry out these analysis, I therefore used two different datasets for each topic. 
+            For the LeBron James analysis, I evaluated:
             - LeBron James per Game stats;
             - LeBron James totals stats.
             For the Season 2020/2021 analysis, I evaluated:
@@ -43,7 +45,6 @@ if sec == 'Data cleaning':
             - Season 2020/2021 advanced stats. 
             ''')
 
-    #aggiungere with con i due dataset di LeBron (xG e Tot)
     with st.expander('The LeBron James Career dataset based on Per Game stats for season'):
             st.write('The dataset is available on Basketball Reference at https://www.basketball-reference.com/players/j/jamesle01.html. It is the first table in the web page and it is an html file because LeBron is still playing, then his stats are increasing and changing day by day.')
             st.download_button('Download CSV', LBJ_xGStats_df.to_csv(index=False))
@@ -54,12 +55,46 @@ if sec == 'Data cleaning':
             st.download_button('Download CSV', LBJ_TotStats_df.to_csv(index=False))
             st.write('It contains all the stats during the whole career of LeBron James taken with the totals per season and it is still in update because he is still playing.')
 
+            #explanation of variables in the datasets
+            st.write('''
+            In these datasets, there are the same stats explaining the LeBron James's style of play and these are also the usual stats used to analise different players.
+            First of all, the two raws datasets contain 24 rows and 30 coloumns each.
+            The rows represent the different seasons he has played through his career and the last 4 shows his career trends and his trends concerning the three different teams he has played for.
+            The columns are:
+            - Season: every season he has played;
+            - Age: player's age on February 1 of every season;
+            - Tm: the different teams he has played for;
+            - Lg: the league where he played;
+            - Pos: which position he played during the different seasons;
+            - G, GS: these two variables show how many games he has played and he played starting the match;
+            - MP: minutes played per game and totals for every season;
+            - FG, FGA, FG%: these variables represent the field goals realized, attempted and the percentage;
+            - 3P, 3PA, 3P%: these variables represent the 3-point field goals realized, attempted and the percentage;
+            - 2P, 2PA, 2P%: these variables represent the 2-point field goals realized, attempted and the percentage;
+            - FT, FTA, FT%: these variables represent the free throws realized, attempted and the percentage;
+            - eFG%: This statistic adjusts for the fact that a 3-point field goal is worth one more point than a 2-point field goal;
+            - ORB, DRB, TRB: these variables represent the offensive, defensive and total rebounds made;
+            - AST: assists provided to his teammates;
+            - STL: balls stolen to his opponents;
+            - BLK: shots blocked to his opponents;
+            - TOV: balls lost during a possession;
+            - PF: personal fouls made;
+            - PTS: sum of points realized with every basket.
+
+            All these stats are analysed according to the Per Game and the Totals, so in the first case the playing statistics are normalized per Game. In the second case those statistics are just sumed up in order to find the totals in every season.
+            ''')
+
     with st.expander('The Per Game Stats dataset'):
             st.write('The dataset is available on Basketball Reference at https://www.basketball-reference.com/leagues/NBA_2021_per_game.html. It is the first table in the web page and before turning the html dataframe into csv file I had to erase and clean some stats and some inaccuracies. You can download the raw data here.')
             st.download_button('Download CSV', original_xGStats_df.to_csv(index=False))
             st.write('It contains all the usual stats provided to analyse the whole season 2020/2021, like points, rebounds, assists and so on.')
 
-            #spiegare variabili che ci sono nel dataset
+            #explanation of variables in the dataset
+            st.write('''
+            In this dataset are represented the same statistics as the LeBron James Per Game Dataset, so the variables won't be presented avoiding a repetition.
+            The only difference between the two datasets is that in the first one, only one player is analysed, instead in the second case there are initially 731 rows instead of 24.
+            In these rows are represented all the players in the NBA in the season 2020/2021 but also some repetition of the first row, which represents the name of the different variables.
+            ''')
 
     with st.expander('The Advanced Stats dataset'):
             st.write('The dataset is available on Basketball Reference at https://www.basketball-reference.com/leagues/NBA_2021_advanced.html. It is the first table in the web page and before turning the html dataframe into csv file I had to erase and clean some stats and some inaccuracies. You can download the raw data here.')
