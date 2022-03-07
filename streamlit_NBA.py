@@ -100,7 +100,6 @@ if sec == 'Data cleaning':
             st.write('The dataset is available on Basketball Reference at https://www.basketball-reference.com/leagues/NBA_2021_advanced.html. It is the first table in the web page and before turning the html dataframe into csv file I had to erase and clean some stats and some inaccuracies. You can download the raw data here.')
             st.download_button('Download CSV', original_AdvStats_df.to_csv(index=False))
             st.write('It contains specific stats based on advanced analysis about the whole season 2020/2021, and unlike the previous stats these are established only when the season is finished. Some of these stats are win share, box plus minus and others.')
-
             #spiegare variabili che ci sono nel dataset
     
     #aggiungere dataset finali o fare le modifiche al momento e spiegarle
@@ -116,7 +115,7 @@ if sec == 'LeBron James exploration and analysis':
     x = st.selectbox('Choose a Stat', LBJ_xGStats_df.columns.tolist())
     ms = LBJ_xGStats_df[x].max()
     a = LBJ_xGStats_df[LBJ_xGStats_df[x]==ms].Season
-    st.write(a, 'The max for this stat is: ', ms)
+    st.write('The max has been registered in the: ', a, 'The max for this stat is: ', ms)
 
     Season = list(LBJ_xGStats_df['Season'])
     Peppino = list(LBJ_xGStats_df[x])
