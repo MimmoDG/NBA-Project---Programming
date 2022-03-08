@@ -85,6 +85,7 @@ if sec == 'Data cleaning':
             - PTS: sum of points realized with every basket.
 
             All these stats are analysed according to the Per Game and the Totals, so in the first case the playing statistics are normalized per Game. In the second case those statistics are just sumed up in order to find the totals in every season.
+            #There is only one difference between the two datasets which is represented by the triple double variable.
             ''')
 
     with st.expander('The Per Game Stats dataset'):
@@ -105,7 +106,13 @@ if sec == 'Data cleaning':
             st.write('It contains specific stats based on advanced analysis about the whole season 2020/2021, and unlike the previous stats these are established only when the season is finished. Some of these stats are win share, box plus minus and others.')
             #spiegare variabili che ci sono nel dataset
     
-    st.write()
+    st.markdown('''
+    After providing the initial dataset of every analysis expired, now will be explained how I cleaned and set up the final dataset for each initial one.
+    First of all, for the LeBron James datasets it was easier to clean up because the two datasets are smaller than the others.
+    In fact, for the LeBron James datasets I had to delete the last four rows initially provided because they contained different summaries about his career: there were one for the whole career and three representing the three teams he played and still plays for.
+    After that I deleted some variables not very useful for the analysis, like the league where he plays, the games started because are equal to the game he played, the age because it's similar to the season statistic.
+    This cleaning process has been applied for both the datasets, #with the difference that for the totals analysis there is one more statistic represented by the triple double.
+    ''')
     #aggiungere dataset finali o fare le modifiche al momento e spiegarle
     #scrivere questa parte con markdown
     #vanno aggiunti anche altri expander coi dataset finali
@@ -116,13 +123,13 @@ if sec == 'Data cleaning':
 if sec == 'LeBron James exploration and analysis':
     st.header('LeBron James exploration and analysis')
 
-    x = st.selectbox('Choose a Stat', LBJ_xGStats_df.columns.tolist())
-    ms = LBJ_xGStats_df[x].max()
-    a = LBJ_xGStats_df[LBJ_xGStats_df[x]==ms].Season
+    x = st.selectbox('Choose a Stat', final_LBJ_xG_df.columns.tolist())
+    ms = final_LBJ_xG_df[x].max()
+    a = final_LBJ_xG_df[final_LBJ_xG_df[x]==ms].Season
     st.write('The max has been registered in the: ', a, 'The max for this stat is: ', ms)
 
-    Season = list(LBJ_xGStats_df['Season'])
-    Peppino = list(LBJ_xGStats_df[x])
+    Season = list(final_LBJ_xG_df['Season'])
+    Peppino = list(final_LBJ_xG_df[x])
     fig = plt.figure(figsize=(10, 6))
     plt.plot(Season, Peppino, '-o')
     plt.title('LeBron ' + x + ' averages in every season')
