@@ -13,15 +13,18 @@ import streamlit.components.v1 as components
 original_xGStats_df = pd.read_csv('df_xGStats.csv')
 original_AdvStats_df = pd.read_csv('df_AdvStats.csv')
 
-Adv_Stats_1_df = pd.read_csv('Adv_Stats_1.csv')
-xG_Stats_1_df = pd.read_csv('xG_Stats_1.csv')
-LeBron_Injuries_df = pd.read_csv('LeBron_Injuries.csv')
-
 LBJ_Stats_df = pd.read_html('https://www.basketball-reference.com/players/j/jamesle01.html')
 LBJ_xGStats_df = pd.DataFrame(LBJ_Stats_df[0])
 LBJ_TotStats_df = pd.DataFrame(LBJ_Stats_df[2])
 
 #import the finals datasets
+
+final_LBJ_xG_df = pd.read_csv('df_LBJ_xG_Stats_final.csv')
+final_LBJ_Tot_df = pd.read_csv('df_LBJ_Tot_Stats_final.csv')
+
+Adv_Stats_1_df = pd.read_csv('Adv_Stats_1.csv')
+xG_Stats_1_df = pd.read_csv('xG_Stats_1.csv')
+LeBron_Injuries_df = pd.read_csv('LeBron_Injuries.csv')
 
 st.title('NBA Project: Analysis and Prediction about LeBron James Career and Season 2020/2021')
 
@@ -102,6 +105,7 @@ if sec == 'Data cleaning':
             st.write('It contains specific stats based on advanced analysis about the whole season 2020/2021, and unlike the previous stats these are established only when the season is finished. Some of these stats are win share, box plus minus and others.')
             #spiegare variabili che ci sono nel dataset
     
+    st.write()
     #aggiungere dataset finali o fare le modifiche al momento e spiegarle
     #scrivere questa parte con markdown
     #vanno aggiunti anche altri expander coi dataset finali
