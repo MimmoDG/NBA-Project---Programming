@@ -17,6 +17,18 @@ LBJ_Stats_df = pd.read_html('https://www.basketball-reference.com/players/j/jame
 LBJ_xGStats_df = pd.DataFrame(LBJ_Stats_df[0])
 LBJ_TotStats_df = pd.DataFrame(LBJ_Stats_df[2])
 
+#copie dei datasets originali
+or_xG_Stats_df = original_xGStats_df
+or_Adv_Stats_df = original_AdvStats_df
+copy_LBJ_xGStats_df = LBJ_xGStats_df
+copy_LBJ_TotStats_df = LBJ_TotStats_df
+
+#processi di cleaning dei datasets
+
+for el in copy_LBJ_xGStats_df:
+  if(el != "Season" and el != "Pos"  and el != "Tm" and el != "Lg"):
+    copy_LBJ_xGStats_df[el] = pd.to_numeric(copy_LBJ_xGStats_df[el])
+
 #import the finals datasets
 
 final_LBJ_xG_df = pd.read_csv('df_LBJ_xG_Stats_final.csv')
