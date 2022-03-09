@@ -18,16 +18,57 @@ LBJ_xGStats_df = pd.DataFrame(LBJ_Stats_df[0])
 LBJ_TotStats_df = pd.DataFrame(LBJ_Stats_df[2])
 
 #copie dei datasets originali
-or_xG_Stats_df = original_xGStats_df
-or_Adv_Stats_df = original_AdvStats_df
-copy_LBJ_xGStats_df = LBJ_xGStats_df
-copy_LBJ_TotStats_df = LBJ_TotStats_df
+or_xG_Stats_df = original_xGStats_df #first dataset season 2020/21
+or_Adv_Stats_df = original_AdvStats_df #second dataset season 2020/21
+copy_LBJ_xGStats_df = LBJ_xGStats_df #first dataset LeBron
+copy_LBJ_TotStats_df = LBJ_TotStats_df #second dataset LeBron
 
-#processi di cleaning dei datasets
+#processi di cleaning dei datasets:
+
+# --> first dataset LeBron
 
 for el in copy_LBJ_xGStats_df:
   if(el != "Season" and el != "Pos"  and el != "Tm" and el != "Lg"):
     copy_LBJ_xGStats_df[el] = pd.to_numeric(copy_LBJ_xGStats_df[el])
+
+LeB_C_PG_RS1 = copy_LBJ_xGStats_df.drop(labels=range(19, 24), axis=0)
+LeB_C_PG_RS = LeB_C_PG_RS1.drop(labels=['Lg', 'Age', 'GS'], axis=1)
+
+# --> second dataset LeBron
+
+for el in copy_LBJ_TotStats_df:
+  if(el != "Season" and el != "Pos"  and el != "Tm" and el != "Lg"):
+    copy_LBJ_TotStats_df[el] = pd.to_numeric(copy_LBJ_TotStats_df[el])
+
+LeB_C_Tot_RS1 = copy_LBJ_TotStats_df.drop(labels=range(19, 24), axis=0)
+LeB_C_Tot_RS = LeB_C_Tot_RS1.drop(labels=['Lg', 'Age', 'GS', 'Unnamed: 30', 'Trp Dbl'], axis=1)
+
+# --> first dataset season 2020/21
+
+xG_Stats = or_xG_Stats_df.where(or_xG_Stats_df["Player"] != "Player").dropna(how='all', axis=0)
+xG_Stats_1 = xG_Stats.where(xG_Stats["Tm"] != "TOT").dropna(how='all', axis=0)
+xG_Stats_1.drop('Rk', axis=1, inplace=True)
+for el in xG_Stats_1:
+  if(el != "Player" and el != "Pos"  and el != "Tm"):
+    xG_Stats_1[el] = pd.to_numeric(xG_Stats_1[el])
+xG_Stats_1['FG%'].fillna(0, inplace=True)
+xG_Stats_1['3P%'].fillna(0, inplace=True)
+xG_Stats_1['2P%'].fillna(0, inplace=True)
+xG_Stats_1['eFG%'].fillna(0, inplace=True)
+xG_Stats_1['FT%'].fillna(0, inplace=True)
+
+# --> second dataset season 2020/21
+
+Adv_Stats = or_Adv_Stats_df.where(or_Adv_Stats_df["Player"] != "Player").dropna(how='all',axis=0)
+for el in Adv_Stats:
+  if(el != "Player" and el != "Pos"  and el != "Tm"):
+    Adv_Stats[el] = pd.to_numeric(Adv_Stats[el])
+Adv_Stats.drop(['Unnamed: 19', 'Unnamed: 24'], axis=1, inplace=True)
+Adv_Stats['TOV%'].fillna(0, inplace=True)
+Adv_Stats['TS%'].fillna(0, inplace=True)
+Adv_Stats['3PAr'].fillna(0, inplace=True)
+Adv_Stats['FTr'].fillna(0, inplace=True)
+
 
 #import the finals datasets
 
