@@ -157,39 +157,150 @@ if sec == 'Data cleaning':
             st.write('The dataset is available on Basketball Reference at https://www.basketball-reference.com/leagues/NBA_2021_advanced.html. It is the first table in the web page and before turning the html dataframe into csv file I had to erase and clean some stats and some inaccuracies. You can download the raw data here.')
             st.download_button('Download CSV', original_AdvStats_df.to_csv(index=False))
             st.write('It contains specific stats based on advanced analysis about the whole season 2020/2021, and unlike the previous stats these are established only when the season is finished. Some of these stats are win share, box plus minus and others.')
+            
             #spiegare variabili che ci sono nel dataset
+            st.write('''
+            In this dataset there are unusual variables to explain different features about the athletes who play in the NBA.
+            All these statistics are provided at the end of the season, because they represent an 'a Posteriori' analysis.
+            The dataset is composed by rows and columns. In the rows are listed the whole number of players in the season 2020/21, more precisely there are 540 players but some of them has changed team during the season so they are listed two or even three times for each team they played for.
+            In the columns are listed the different stats used in the analysis and those are:
+            - Pos: Position;
+            - Age: Player's age on February 1 of the season;
+            - Tm: Team;
+            - G: Games played;
+            - MP: Minutes played;
+            - PER (Player Efficiency Rating): A measure of per-minute production standardized such that the league average is 15;
+            - TS% (True Shooting Percentage): A measure of shooting efficiency that takes into account 2-point field goals, 3-point field goals, and free throws;
+            - 3PAr (3-Point Attempt Rate): Percentage of FG Attempts from 3-Point Range;
+            - FTr (Free Throw Attempt Rate): Number of FT Attempts Per FG Attempt;
+            - ORB% (Offensive Rebound Percentage): An estimate of the percentage of available offensive rebounds a player grabbed while they were on the floor;
+            - DRB% (Defensive Rebound Percentage): An estimate of the percentage of available defensive rebounds a player grabbed while they were on the floor;
+            - TRB% (Total Rebound Percentage): An estimate of the percentage of available rebounds a player grabbed while they were on the floor;
+            - AST% (Assist Percentage): An estimate of the percentage of teammate field goals a player assisted while they were on the floor;
+            - STL% (Steal Percentage): An estimate of the percentage of opponent possessions that end with a steal by the player while they were on the floor;
+            - BLK% (Block Percentage): An estimate of the percentage of opponent two-point field goal attempts blocked by the player while they were on the floor;
+            - TOV% (Turnover Percentage): An estimate of turnovers committed per 100 plays;
+            - USG% (Usage Percentage): An estimate of the percentage of team plays used by a player while they were on the floor;
+            - OWS (Offensive Win Shares): An estimate of the number of wins contributed by a player due to offense;
+            - DWS (Defensive Win Shares): An estimate of the number of wins contributed by a player due to defense;
+            - WS (Win Shares): An estimate of the number of wins contributed by a player;
+            - WS/48 (Win Shares Per 48 Minutes): An estimate of the number of wins contributed by a player per 48 minutes (league average is approximately .100);
+            - OBPM (Offensive Box Plus/Minus): A box score estimate of the offensive points per 100 possessions a player contributed above a league-average player, translated to an average team;
+            - DBPM (Defensive Box Plus/Minus): A box score estimate of the defensive points per 100 possessions a player contributed above a league-average player, translated to an average team;
+            - BPM (Box Plus/Minus): A box score estimate of the points per 100 possessions a player contributed above a league-average player, translated to an average team;
+            - VORP (Value over Replacement Player): A box score estimate of the points per 100 TEAM possessions that a player contributed above a replacement-level (-2.0) player, translated to an average team and prorated to an 82-game season.
+            ''')
     
     st.markdown('''
     After providing the initial dataset of every analysis expired, now will be explained how I cleaned and set up the final dataset for each initial one.
     First of all, for the LeBron James datasets it was easier to clean up because the two datasets are smaller than the others.
     In fact, for the LeBron James datasets I had to delete the last four rows initially provided because they contained different summaries about his career: there were one for the whole career and three representing the three teams he played and still plays for.
     After that I deleted some variables not very useful for the analysis, like the league where he plays, the games started because are equal to the game he played, the age because it's similar to the season statistic.
-    This cleaning process has been applied for both the datasets, #with the difference that for the totals analysis there is one more statistic represented by the triple double.
+    This cleaning process has been applied for both the datasets, in order to make equal the two datasets encouraging a comparison between them.
     ''')
-    #aggiungere dataset finali o fare le modifiche al momento e spiegarle
-    #scrivere questa parte con markdown
-    #vanno aggiunti anche altri expander coi dataset finali
-    #dopo aver inserito i dataset finali e il download button con i csv è finita la parte di data cleaning 
-    #capire bene come fare le modifiche al momento e renderle visibili su streamlit
 
+    # add final datasets and download button for them
+    # add also a brief explenation of the steps done
+    # mancano due spiegazioni poi è finito
+
+    with st.expander('Final LeBron James Datasets'):
+          st.write('The two final datasets for the LeBron James Analysis are here attacched.')
+          st.download_button('Download CSV', final_LBJ_xG_df.to_csv(index=False))
+          st.write(''' For the 'Per Game' stats are been made few changes: 
+          The first one change all the stats that are tipically numeric, but initially stored as object, from object to numeric datatype. 
+          Secondly, are deleted the summary rows containing the whole career and the different teams he played for.
+          Lastly, are deleted three variables that are not significant for the analysis or redundant: Age, GS and Lg.
+          ''')
+          st.download_button('Download CSV', final_LBJ_Tot_df.to_csv(index=False))
+          st.write(''' As for the first dataset, also for the 'Totals' stats haven't been made a lot of changes:
+          As for the previous dataset the first step is about the datatype of the different stats, changing it from object to numeric.
+          Also the second step is equal, with the deletion of the summary rows.
+          The third and last step is different from the 'Per Game' dataset, in fact in it are deleted some variables not so significant for the analysis and those are: Age, GS, Lg, Unnamed: 30 and Trp Dbl.
+          ''')
+    with st.expander('Final Season 2020/2021 Datasets'):
+          st.write('The two final datasets for the Season 2020/2021 Analysis are here attacched.')
+          st.download_button('Download CSV', xG_Stats_1_df.to_csv(index=False))
+          st.write('''
+          ''')
+          st.download_button('Download CSV', Adv_Stats_1_df.to_csv(index=False))
+          st.write('''
+          ''')
 
 if sec == 'LeBron James exploration and analysis':
     st.header('LeBron James exploration and analysis')
 
-    x = st.selectbox('Choose a Stat', final_LBJ_xG_df.columns.tolist())
-    ms = final_LBJ_xG_df[x].max()
-    a = final_LBJ_xG_df[final_LBJ_xG_df[x]==ms].Season
-    st.write('The max has been registered in the: ', a, 'The max for this stat is: ', ms)
+    st.radio('Choose a dataset', ['Per Game Stats', 'Totals Stats'])
+    if 'Per Game Stats':
+      x = st.selectbox('Choose a Stat', LeB_C_PG_RS.columns.tolist())
+      ms = LeB_C_PG_RS[x].max()
+      a = LeB_C_PG_RS[LeB_C_PG_RS[x]==ms].Season
+      st.write('The max has been registered in the: ', a, 'The max for this stat is: ', ms)
 
-    Season = list(final_LBJ_xG_df['Season'])
-    Peppino = list(final_LBJ_xG_df[x])
-    fig = plt.figure(figsize=(10, 6))
-    plt.plot(Season, Peppino, '-o')
-    plt.title('LeBron ' + x + ' averages in every season')
-    plt.xlabel('Seasons')
-    plt.ylabel(x)
-    plt.xticks(rotation=45)
-    st.pyplot(fig)
+      Season = list(LeB_C_PG_RS['Season'])
+      Peppino = list(LeB_C_PG_RS[x])
+      fig = plt.figure(figsize=(10, 6))
+      plt.plot(Season, Peppino, '-o')
+      plt.title('LeBron ' + x + ' averages in every season')
+      plt.xlabel('Seasons')
+      plt.ylabel(x)
+      plt.xticks(rotation=45)
+      st.pyplot(fig)
+
+      x = st.selectbox('Choose a Stat', LeB_C_PG_RS.columns.tolist())
+      ms = LeB_C_PG_RS[x].min()
+      a = LeB_C_PG_RS[LeB_C_PG_RS[x]==ms].Season
+      st.write('The min has been registered in the: ', a, 'The min for this stat is: ', ms)
+
+      Season = list(LeB_C_PG_RS['Season'])
+      Peppino = list(LeB_C_PG_RS[x])
+      fig = plt.figure(figsize=(10, 6))
+      plt.plot(Season, Peppino, '-o')
+      plt.title('LeBron ' + x + ' averages in every season')
+      plt.xlabel('Seasons')
+      plt.ylabel(x)
+      plt.xticks(rotation=45)
+      st.pyplot(fig)
+
+      x = st.selectbox('Choose a Stat', LeB_C_PG_RS.columns.tolist())
+      ms = LeB_C_PG_RS[x].mean()
+      a = LeB_C_PG_RS[LeB_C_PG_RS[x]==ms].Season
+      st.write('The mean for this statistic is: ', ms)
+    
+    if 'Totals Stats':
+      x = st.selectbox('Choose a Stat', LeB_C_Tot_RS.columns.tolist())
+      ms = LeB_C_Tot_RS[x].max()
+      a = LeB_C_Tot_RS[LeB_C_Tot_RS[x]==ms].Season
+      st.write('The max has been registered in the: ', a, 'The max for this stat is: ', ms)
+
+      Season = list(LeB_C_Tot_RS['Season'])
+      Peppino = list(LeB_C_Tot_RS[x])
+      fig = plt.figure(figsize=(10, 6))
+      plt.plot(Season, Peppino, '-o')
+      plt.title('LeBron ' + x + ' averages in every season')
+      plt.xlabel('Seasons')
+      plt.ylabel(x)
+      plt.xticks(rotation=45)
+      st.pyplot(fig)
+
+      x = st.selectbox('Choose a Stat', LeB_C_Tot_RS.columns.tolist())
+      ms = LeB_C_Tot_RS[x].min()
+      a = LeB_C_Tot_RS[LeB_C_Tot_RS[x]==ms].Season
+      st.write('The min has been registered in the: ', a, 'The min for this stat is: ', ms)
+
+      Season = list(LeB_C_Tot_RS['Season'])
+      Peppino = list(LeB_C_Tot_RS[x])
+      fig = plt.figure(figsize=(10, 6))
+      plt.plot(Season, Peppino, '-o')
+      plt.title('LeBron ' + x + ' averages in every season')
+      plt.xlabel('Seasons')
+      plt.ylabel(x)
+      plt.xticks(rotation=45)
+      st.pyplot(fig)
+
+      x = st.selectbox('Choose a Stat', LeB_C_Tot_RS.columns.tolist())
+      ms = LeB_C_Tot_RS[x].mean()
+      a = LeB_C_Tot_RS[LeB_C_Tot_RS[x]==ms].Season
+      st.write('The mean for this statistic is: ', ms)
 
 if sec == 'Predictive model for LeBron James':
     st.header('Predictive model for LeBron James')
