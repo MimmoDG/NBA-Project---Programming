@@ -63,7 +63,7 @@ Adv_Stats = or_Adv_Stats_df.where(or_Adv_Stats_df["Player"] != "Player").dropna(
 for el in Adv_Stats:
   if(el != "Player" and el != "Pos"  and el != "Tm"):
     Adv_Stats[el] = pd.to_numeric(Adv_Stats[el])
-Adv_Stats.drop(['Unnamed: 19', 'Unnamed: 24'], axis=1, inplace=True)
+Adv_Stats.drop(['Rk', 'Unnamed: 19', 'Unnamed: 24'], axis=1, inplace=True)
 Adv_Stats['TOV%'].fillna(0, inplace=True)
 Adv_Stats['TS%'].fillna(0, inplace=True)
 Adv_Stats['3PAr'].fillna(0, inplace=True)
