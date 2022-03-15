@@ -225,24 +225,29 @@ if sec == 'Data cleaning':
           st.download_button('Download CSV', Adv_Stats_1_df.to_csv(index=False))
           st.write('''
           ''')
+# forse mettere le heatmap con qualche spiegazione oppure nelle sezioni giuste
+# mettere nelle singole sezioni le sotto tabelline fatte ma non nella parte di data cleaning dato che non sono salvataggi
 
 if sec == 'LeBron James exploration and analysis':
     st.header('LeBron James exploration and analysis')
 
-    st.radio('Choose a dataset', ['Per Game Stats', 'Totals Stats'])
-    if 'Per Game Stats':
+    selection = st.radio('Choose a dataset', ('Per Game Stats', 'Totals Stats'))
+    if selection == 'Per Game Stats':
       x = st.selectbox('Choose a Stat', LeB_C_PG_RS.columns.tolist())
+      #togliere season, pos e tm da analisi su max, min e mean
 
-      y = st.selectbox('asmc', ['Max', 'Min', 'Mean'])
+      y = st.selectbox('Choose a feature', ['Max', 'Min', 'Mean'])
 
       if y == 'Max':
         ms = LeB_C_PG_RS[x].max()
-        a = LeB_C_PG_RS[LeB_C_PG_RS[x]==ms].Season
-        st.write('The max has been registered in the: ', a, 'The max for this stat is: ', ms) 
+        num = int(LeB_C_PG_RS[LeB_C_PG_RS[x]==ms].index.to_list()[0])
+        a = LeB_C_PG_RS.loc[num,'Season']
+        st.write('The max has been registered in the: ', a, ' season. The max for this stat is: ', ms) 
       if y == 'Min':
         ms = LeB_C_PG_RS[x].min()
-        a = LeB_C_PG_RS[LeB_C_PG_RS[x]==ms].Season
-        st.write('The min has been registered in the: ', a, 'The min for this stat is: ', ms) 
+        num = int(LeB_C_PG_RS[LeB_C_PG_RS[x]==ms].index.to_list()[0])
+        a = LeB_C_PG_RS.loc[num, 'Season']
+        st.write('The min has been registered in the: ', a, ' season. The min for this stat is: ', ms) 
       if y == 'Mean':
         ms = LeB_C_PG_RS[x].mean()
         st.write('The mean for this stat is: ', ms)
@@ -258,39 +263,39 @@ if sec == 'LeBron James exploration and analysis':
       st.pyplot(fig)
     
     if 'Totals Stats':
-      xx = st.selectbox('Choose a Stat', LeB_C_Tot_RS.columns.tolist())
-      mss = LeB_C_Tot_RS[xx].max()
-      aa = LeB_C_Tot_RS[LeB_C_Tot_RS[xx]==mss].Season
-      st.write('The max has been registered in the: ', aa, 'The max for this stat is: ', mss)
+      x = st.selectbox('Choose a Stat', LeB_C_Tot_RS.columns.tolist())
 
+      y = st.selectbox('Choose a feature', ['Max', 'Min', 'Mean'])
+
+      if y == 'Max':
+        ms = LeB_C_Tot_RS[x].max()
+        num = int(LeB_C_Tot_RS[LeB_C_Tot_RS[x]==ms].index.to_list()[0])
+        a = LeB_C_Tot_RS.loc[num,'Season']
+        st.write('The max has been registered in the: ', a, ' season. The max for this stat is: ', ms) 
+      if y == 'Min':
+        ms = LeB_C_Tot_RS[x].min()
+        num = int(LeB_C_Tot_RS[LeB_C_Tot_RS[x]==ms].index.to_list()[0])
+        a = LeB_C_Tot_RS.loc[num, 'Season']
+        st.write('The min has been registered in the: ', a, ' season. The min for this stat is: ', ms) 
+      if y == 'Mean':
+        ms = LeB_C_Tot_RS[x].mean()
+        st.write('The mean for this stat is: ', ms)
+      
       Season = list(LeB_C_Tot_RS['Season'])
-      Peppino = list(LeB_C_Tot_RS[xx])
+      Peppino = list(LeB_C_Tot_RS[x])
       fig = plt.figure(figsize=(10, 6))
       plt.plot(Season, Peppino, '-o')
-      plt.title('LeBron ' + xx + ' averages in every season')
+      plt.title('LeBron ' + x + ' averages in every season')
       plt.xlabel('Seasons')
-      plt.ylabel(xx)
+      plt.ylabel(x)
       plt.xticks(rotation=45)
       st.pyplot(fig)
 
-      yy = st.selectbox('Choose a Stat', LeB_C_Tot_RS.columns.tolist())
-      mnn = LeB_C_Tot_RS[yy].min()
-      bb = LeB_C_Tot_RS[LeB_C_Tot_RS[yy]==mnn].Season
-      st.write('The min has been registered in the: ', bb, 'The min for this stat is: ', mnn)
-
-      Season = list(LeB_C_Tot_RS['Season'])
-      Peppino = list(LeB_C_Tot_RS[yy])
-      fig = plt.figure(figsize=(10, 6))
-      plt.plot(Season, Peppino, '-o')
-      plt.title('LeBron ' + yy + ' averages in every season')
-      plt.xlabel('Seasons')
-      plt.ylabel(yy)
-      plt.xticks(rotation=45)
-      st.pyplot(fig)
-
-      zz = st.selectbox('Choose a Stat', LeB_C_Tot_RS.columns.tolist())
-      mdd = LeB_C_Tot_RS[zz].mean()
-      st.write('The mean for this statistic is: ', mdd)
+# show other features, other stats analysed
+# plots su Teams and Pos + stats on the same columns
+# plot misti con più stats (FG%, 3P%, 2P%, FT%) etc.
+# plot distribuzioni (hist, di tutte le variabili)
+#
 
 if sec == 'Predictive model for LeBron James':
     st.header('Predictive model for LeBron James')
