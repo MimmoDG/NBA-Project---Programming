@@ -232,10 +232,21 @@ if sec == 'LeBron James exploration and analysis':
     st.radio('Choose a dataset', ['Per Game Stats', 'Totals Stats'])
     if 'Per Game Stats':
       x = st.selectbox('Choose a Stat', LeB_C_PG_RS.columns.tolist())
-      ms = LeB_C_PG_RS[x].max()
-      a = LeB_C_PG_RS[LeB_C_PG_RS[x]==ms].Season
-      st.write('The max has been registered in the: ', a, 'The max for this stat is: ', ms)
 
+      y = st.selectbox('asmc', ['Max', 'Min', 'Mean'])
+
+      if y == 'Max':
+        ms = LeB_C_PG_RS[x].max()
+        a = LeB_C_PG_RS[LeB_C_PG_RS[x]==ms].Season
+        st.write('The max has been registered in the: ', a, 'The max for this stat is: ', ms) 
+      if y == 'Min':
+        ms = LeB_C_PG_RS[x].min()
+        a = LeB_C_PG_RS[LeB_C_PG_RS[x]==ms].Season
+        st.write('The min has been registered in the: ', a, 'The min for this stat is: ', ms) 
+      if y == 'Mean':
+        ms = LeB_C_PG_RS[x].mean()
+        st.write('The mean for this stat is: ', ms)
+      
       Season = list(LeB_C_PG_RS['Season'])
       Peppino = list(LeB_C_PG_RS[x])
       fig = plt.figure(figsize=(10, 6))
@@ -245,25 +256,6 @@ if sec == 'LeBron James exploration and analysis':
       plt.ylabel(x)
       plt.xticks(rotation=45)
       st.pyplot(fig)
-
-      y = st.selectbox('Choose a Stat', LeB_C_PG_RS.columns.tolist())
-      mn = LeB_C_PG_RS[y].min()
-      b = LeB_C_PG_RS[LeB_C_PG_RS[y]==ms].Season
-      st.write('The min has been registered in the: ', b, 'The min for this stat is: ', mn)
-
-      Season = list(LeB_C_PG_RS['Season'])
-      Peppino = list(LeB_C_PG_RS[y])
-      fig = plt.figure(figsize=(10, 6))
-      plt.plot(Season, Peppino, '-o')
-      plt.title('LeBron ' + y + ' averages in every season')
-      plt.xlabel('Seasons')
-      plt.ylabel(y)
-      plt.xticks(rotation=45)
-      st.pyplot(fig)
-
-      z = st.selectbox('Choose a Stat', LeB_C_PG_RS.columns.tolist())
-      md = LeB_C_PG_RS[z].mean()
-      st.write('The mean for this statistic is: ', md)
     
     if 'Totals Stats':
       xx = st.selectbox('Choose a Stat', LeB_C_Tot_RS.columns.tolist())
