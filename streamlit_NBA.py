@@ -246,61 +246,59 @@ if sec == 'LeBron James exploration and analysis':
       plt.xticks(rotation=45)
       st.pyplot(fig)
 
-      x = st.selectbox('Choose a Stat', LeB_C_PG_RS.columns.tolist())
-      ms = LeB_C_PG_RS[x].min()
-      a = LeB_C_PG_RS[LeB_C_PG_RS[x]==ms].Season
-      st.write('The min has been registered in the: ', a, 'The min for this stat is: ', ms)
+      y = st.selectbox('Choose a Stat', LeB_C_PG_RS.columns.tolist())
+      mn = LeB_C_PG_RS[y].min()
+      b = LeB_C_PG_RS[LeB_C_PG_RS[y]==ms].Season
+      st.write('The min has been registered in the: ', b, 'The min for this stat is: ', mn)
 
       Season = list(LeB_C_PG_RS['Season'])
-      Peppino = list(LeB_C_PG_RS[x])
+      Peppino = list(LeB_C_PG_RS[y])
       fig = plt.figure(figsize=(10, 6))
       plt.plot(Season, Peppino, '-o')
-      plt.title('LeBron ' + x + ' averages in every season')
+      plt.title('LeBron ' + y + ' averages in every season')
       plt.xlabel('Seasons')
-      plt.ylabel(x)
+      plt.ylabel(y)
       plt.xticks(rotation=45)
       st.pyplot(fig)
 
-      x = st.selectbox('Choose a Stat', LeB_C_PG_RS.columns.tolist())
-      ms = LeB_C_PG_RS[x].mean()
-      a = LeB_C_PG_RS[LeB_C_PG_RS[x]==ms].Season
-      st.write('The mean for this statistic is: ', ms)
+      z = st.selectbox('Choose a Stat', LeB_C_PG_RS.columns.tolist())
+      md = LeB_C_PG_RS[z].mean()
+      st.write('The mean for this statistic is: ', md)
     
     if 'Totals Stats':
-      x = st.selectbox('Choose a Stat', LeB_C_Tot_RS.columns.tolist())
-      ms = LeB_C_Tot_RS[x].max()
-      a = LeB_C_Tot_RS[LeB_C_Tot_RS[x]==ms].Season
-      st.write('The max has been registered in the: ', a, 'The max for this stat is: ', ms)
+      xx = st.selectbox('Choose a Stat', LeB_C_Tot_RS.columns.tolist())
+      mss = LeB_C_Tot_RS[xx].max()
+      aa = LeB_C_Tot_RS[LeB_C_Tot_RS[xx]==mss].Season
+      st.write('The max has been registered in the: ', aa, 'The max for this stat is: ', mss)
 
       Season = list(LeB_C_Tot_RS['Season'])
-      Peppino = list(LeB_C_Tot_RS[x])
+      Peppino = list(LeB_C_Tot_RS[xx])
       fig = plt.figure(figsize=(10, 6))
       plt.plot(Season, Peppino, '-o')
-      plt.title('LeBron ' + x + ' averages in every season')
+      plt.title('LeBron ' + xx + ' averages in every season')
       plt.xlabel('Seasons')
-      plt.ylabel(x)
+      plt.ylabel(xx)
       plt.xticks(rotation=45)
       st.pyplot(fig)
 
-      x = st.selectbox('Choose a Stat', LeB_C_Tot_RS.columns.tolist())
-      ms = LeB_C_Tot_RS[x].min()
-      a = LeB_C_Tot_RS[LeB_C_Tot_RS[x]==ms].Season
-      st.write('The min has been registered in the: ', a, 'The min for this stat is: ', ms)
+      yy = st.selectbox('Choose a Stat', LeB_C_Tot_RS.columns.tolist())
+      mnn = LeB_C_Tot_RS[yy].min()
+      bb = LeB_C_Tot_RS[LeB_C_Tot_RS[yy]==mnn].Season
+      st.write('The min has been registered in the: ', bb, 'The min for this stat is: ', mnn)
 
       Season = list(LeB_C_Tot_RS['Season'])
-      Peppino = list(LeB_C_Tot_RS[x])
+      Peppino = list(LeB_C_Tot_RS[yy])
       fig = plt.figure(figsize=(10, 6))
       plt.plot(Season, Peppino, '-o')
-      plt.title('LeBron ' + x + ' averages in every season')
+      plt.title('LeBron ' + yy + ' averages in every season')
       plt.xlabel('Seasons')
-      plt.ylabel(x)
+      plt.ylabel(yy)
       plt.xticks(rotation=45)
       st.pyplot(fig)
 
-      x = st.selectbox('Choose a Stat', LeB_C_Tot_RS.columns.tolist())
-      ms = LeB_C_Tot_RS[x].mean()
-      a = LeB_C_Tot_RS[LeB_C_Tot_RS[x]==ms].Season
-      st.write('The mean for this statistic is: ', ms)
+      zz = st.selectbox('Choose a Stat', LeB_C_Tot_RS.columns.tolist())
+      mdd = LeB_C_Tot_RS[zz].mean()
+      st.write('The mean for this statistic is: ', mdd)
 
 if sec == 'Predictive model for LeBron James':
     st.header('Predictive model for LeBron James')
