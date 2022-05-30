@@ -7,6 +7,12 @@ from sklearn.tree import DecisionTreeClassifier
 import sklearn.metrics as skm
 import time
 import streamlit.components.v1 as components
+from sklearn import linear_model
+from sklearn.linear_model import LinearRegression
+from sklearn.linear_model import Lasso
+from sklearn.linear_model import Ridge
+from sklearn import cluster
+from sklearn.cluster import KMeans
 
 #import the initials datasets
 
