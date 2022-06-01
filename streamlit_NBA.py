@@ -14,6 +14,7 @@ from sklearn.linear_model import Ridge
 from sklearn.linear_model import LogisticRegression
 from sklearn import cluster
 from sklearn.cluster import KMeans
+import streamlit_option_menu as som
 
 #import the initials datasets
 
@@ -67,7 +68,6 @@ xG_Stats_1['FT%'].fillna(0, inplace=True)
 # --> second dataset season 2020/21
 
 Adv_Stats = or_Adv_Stats_df.where(or_Adv_Stats_df["Player"] != "Player").dropna(how='all',axis=0)
-Adv_Stats = or_Adv_Stats_df.where(or_Adv_Stats_df["Tm"] != "TOT").dropna(how='all', axis=0)
 for el in Adv_Stats:
   if(el != "Player" and el != "Pos"  and el != "Tm"):
     Adv_Stats[el] = pd.to_numeric(Adv_Stats[el])
@@ -89,7 +89,8 @@ LeBron_Injuries_df = pd.read_csv('LeBron_Injuries.csv')
 
 st.title('NBA Project: Analysis and Prediction about LeBron James Career and Season 2020/2021')
 
-sec = st.sidebar.radio('Sections:', ['Data cleaning', 'LeBron James exploration and analysis', 'Predictive model for LeBron James', 'Season 2020/2021 exploration and analysis', 'Predictive model for Season 2020/2021'])
+with st.sidebar:
+  sec = som.option_menu('Sections:', ['Data cleaning', 'LeBron James exploration and analysis', 'Predictive model for LeBron James', 'Season 2020/2021 exploration and analysis', 'Predictive model for Season 2020/2021'], menu_icon="cast", default_index=0)
 
 if sec == 'Data cleaning': 
     st.header('Data cleaning')
