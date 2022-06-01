@@ -253,8 +253,7 @@ if sec == 'LeBron James exploration and analysis':
     selection = st.radio('Choose a dataset', ('Per Game Stats', 'Totals Stats'))
 
     if selection == 'Per Game Stats':
-      x = st.selectbox('Choose a Stat', LeB_C_PG_RS.columns.tolist(), key=0)
-      #togliere season, pos e tm da analisi su max, min e mean
+      x = st.selectbox('Choose a Stat', LeB_C_PG_RS.columns.drop(['Season', 'Tm', 'Pos']).tolist(), key=0)
 
       y = st.selectbox('Choose a feature', ['Max', 'Min', 'Mean'], key=1)
 
@@ -283,7 +282,7 @@ if sec == 'LeBron James exploration and analysis':
       st.pyplot(fig)
     
     if 'Totals Stats':
-      x = st.selectbox('Choose a Stat', LeB_C_Tot_RS.columns.tolist(), key=0)
+      x = st.selectbox('Choose a Stat', LeB_C_Tot_RS.columns.drop(['Season', 'Tm', 'Pos']).tolist(), key=0)
 
       y = st.selectbox('Choose a feature', ['Max', 'Min', 'Mean'], key=1)
 
@@ -315,13 +314,17 @@ if sec == 'LeBron James exploration and analysis':
 # plots su Teams and Pos + stats on the same columns
 # plot misti con più stats (FG%, 3P%, 2P%, FT%) etc.
 # plot distribuzioni (hist, di tutte le variabili)
-#
 
 if sec == 'Predictive model for LeBron James':
     st.header('Predictive model for LeBron James')
 
 if sec == 'Season 2020/2021 exploration and analysis':
     st.header('Season 2020/2021 exploration and analysis')
+
+# show other features, other stats analysed
+# plots su Teams and Pos + stats on the same columns
+# plot misti con più stats (FG%, 3P%, 2P%, FT%) etc.
+# plot distribuzioni (hist, di tutte le variabili)
 
 if sec == 'Predictive model for Season 2020/2021':
     st.header('Predictive model for Season 2020/2021')
