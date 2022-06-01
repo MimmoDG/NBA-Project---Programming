@@ -11,6 +11,7 @@ from sklearn import linear_model
 from sklearn.linear_model import LinearRegression
 from sklearn.linear_model import Lasso
 from sklearn.linear_model import Ridge
+from sklearn.linear_model import LogisticRegression
 from sklearn import cluster
 from sklearn.cluster import KMeans
 
@@ -66,6 +67,7 @@ xG_Stats_1['FT%'].fillna(0, inplace=True)
 # --> second dataset season 2020/21
 
 Adv_Stats = or_Adv_Stats_df.where(or_Adv_Stats_df["Player"] != "Player").dropna(how='all',axis=0)
+Adv_Stats = or_Adv_Stats_df.where(or_Adv_Stats_df["Tm"] != "TOT").dropna(how='all', axis=0)
 for el in Adv_Stats:
   if(el != "Player" and el != "Pos"  and el != "Tm"):
     Adv_Stats[el] = pd.to_numeric(Adv_Stats[el])
@@ -144,7 +146,7 @@ if sec == 'Data cleaning':
             - PTS: sum of points realized with every basket.
 
             All these stats are analysed according to the Per Game and the Totals, so in the first case the playing statistics are normalized per Game. In the second case those statistics are just sumed up in order to find the totals in every season.
-            #There is only one difference between the two datasets which is represented by the triple double variable.
+            There is only one difference between the two datasets which is represented by the triple double variable.
             ''')
 
     with st.expander('The Per Game Stats dataset'):
@@ -205,9 +207,8 @@ if sec == 'Data cleaning':
     This cleaning process has been applied for both the datasets, in order to make equal the two datasets encouraging a comparison between them.
     ''')
 
-    # add final datasets and download button for them
-    # add also a brief explenation of the steps done
-    # mancano due spiegazioni poi è finito
+    # final datasets with download button
+    # brief explenation of the steps done
 
     with st.expander('Final LeBron James Datasets'):
           st.write('The two final datasets for the LeBron James Analysis are here attacched.')
@@ -226,37 +227,49 @@ if sec == 'Data cleaning':
     with st.expander('Final Season 2020/2021 Datasets'):
           st.write('The two final datasets for the Season 2020/2021 Analysis are here attacched.')
           st.download_button('Download CSV', xG_Stats_1_df.to_csv(index=False))
-          st.write('''
+          st.write(''' For the 'Per Game' stats have been made different changes:
+          Firstly, the rows containing the variables names repeated every twenty players have been dropped.
+          After that the rows where the player's team was 'TOT' have been dropped, because they present the sum of the statistics for player who played for different teams in the same season, and this fact is not useful for this analysis.
+          Also the column 'Rk' has been dropped for the same reason of the 'TOT'.
+          Nextly, a 'for' cycle has been used to set every variable in the dataset, with the exeption of 'Player', 'Tm' and 'Pos', from object to numeric value.
+          Lastly, all the null value in the percentages have been filled with zero in order to allow comparison also between players who don't shoot from the 3-point line, for example.
+          So the final dataset is prepared and it has been changed accordingly to what feature was relevant for every analysis done on it.
           ''')
           st.download_button('Download CSV', Adv_Stats_1_df.to_csv(index=False))
-          st.write('''
+          st.write(''' For the 'Advanced' stats have been made similar changes to the 'Per Game' dataset.
+          Firstly, as in the previous dataset, have been dropped all the rows containing the name of the variables repeated every twenty players.
+          Then, also in this case the player with the 'TOT' as team and the variable 'Rk' have been dropped. In addition to this, also other two columns have been dropped but they were empty columns.
+          Nextly, a 'for' cycle has been used to set every variable in the dataset, with the exeption of 'Player', 'Tm' and 'Pos', from object to numeric value.
+          Lastly, all the null value in the percentages have been filled with zero in order to allow comparison also between players who don't shoot from the 3-point line, for example.
+          So the final dataset is prepared and it has been changed accordingly to what feature was relevant for every analysis done on it.
           ''')
-# forse mettere le heatmap con qualche spiegazione oppure nelle sezioni giuste
+# forse mettere le heatmap con qualche spiegazione oppure nelle sezioni giuste          
 # mettere nelle singole sezioni le sotto tabelline fatte ma non nella parte di data cleaning dato che non sono salvataggi
 
 if sec == 'LeBron James exploration and analysis':
     st.header('LeBron James exploration and analysis')
 
     selection = st.radio('Choose a dataset', ('Per Game Stats', 'Totals Stats'))
+
     if selection == 'Per Game Stats':
-      x = st.selectbox('Choose a Stat', LeB_C_PG_RS.columns.tolist())
+      x = st.selectbox('Choose a Stat', LeB_C_PG_RS.columns.tolist(), key=0)
       #togliere season, pos e tm da analisi su max, min e mean
 
-      y = st.selectbox('Choose a feature', ['Max', 'Min', 'Mean'])
+      y = st.selectbox('Choose a feature', ['Max', 'Min', 'Mean'], key=1)
 
       if y == 'Max':
         ms = LeB_C_PG_RS[x].max()
         num = int(LeB_C_PG_RS[LeB_C_PG_RS[x]==ms].index.to_list()[0])
         a = LeB_C_PG_RS.loc[num,'Season']
-        st.write('The max has been registered in the: ', a, ' season. The max for this stat is: ', ms) 
+        st.write('The max has been registered in the: ', a, ' season. The max for this stat is: ', str(ms)) 
       if y == 'Min':
         ms = LeB_C_PG_RS[x].min()
         num = int(LeB_C_PG_RS[LeB_C_PG_RS[x]==ms].index.to_list()[0])
         a = LeB_C_PG_RS.loc[num, 'Season']
-        st.write('The min has been registered in the: ', a, ' season. The min for this stat is: ', ms) 
+        st.write('The min has been registered in the: ', a, ' season. The min for this stat is: ', str(ms)) 
       if y == 'Mean':
         ms = LeB_C_PG_RS[x].mean()
-        st.write('The mean for this stat is: ', ms)
+        st.write('The mean for this stat is: ', str(ms))
       
       Season = list(LeB_C_PG_RS['Season'])
       Peppino = list(LeB_C_PG_RS[x])
@@ -269,23 +282,23 @@ if sec == 'LeBron James exploration and analysis':
       st.pyplot(fig)
     
     if 'Totals Stats':
-      x = st.selectbox('Choose a Stat', LeB_C_Tot_RS.columns.tolist())
+      x = st.selectbox('Choose a Stat', LeB_C_Tot_RS.columns.tolist(), key=0)
 
-      y = st.selectbox('Choose a feature', ['Max', 'Min', 'Mean'])
+      y = st.selectbox('Choose a feature', ['Max', 'Min', 'Mean'], key=1)
 
       if y == 'Max':
         ms = LeB_C_Tot_RS[x].max()
         num = int(LeB_C_Tot_RS[LeB_C_Tot_RS[x]==ms].index.to_list()[0])
         a = LeB_C_Tot_RS.loc[num,'Season']
-        st.write('The max has been registered in the: ', a, ' season. The max for this stat is: ', ms) 
+        st.write('The max has been registered in the: ', a, ' season. The max for this stat is: ', str(ms)) 
       if y == 'Min':
         ms = LeB_C_Tot_RS[x].min()
         num = int(LeB_C_Tot_RS[LeB_C_Tot_RS[x]==ms].index.to_list()[0])
         a = LeB_C_Tot_RS.loc[num, 'Season']
-        st.write('The min has been registered in the: ', a, ' season. The min for this stat is: ', ms) 
+        st.write('The min has been registered in the: ', a, ' season. The min for this stat is: ', str(ms)) 
       if y == 'Mean':
         ms = LeB_C_Tot_RS[x].mean()
-        st.write('The mean for this stat is: ', ms)
+        st.write('The mean for this stat is: ', str(ms))
       
       Season = list(LeB_C_Tot_RS['Season'])
       Peppino = list(LeB_C_Tot_RS[x])
