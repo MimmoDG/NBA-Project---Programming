@@ -12,9 +12,17 @@ from sklearn.linear_model import LinearRegression
 from sklearn.linear_model import Lasso
 from sklearn.linear_model import Ridge
 from sklearn.linear_model import LogisticRegression
+from sklearn.linear_model import LassoCV
+from sklearn.linear_model import RidgeCV
 from sklearn import cluster
 from sklearn.cluster import KMeans
 import streamlit_option_menu as som
+from sklearn.metrics import mean_squared_error
+from sklearn.datasets import make_blobs
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.neighbors import KNeighborsClassifier
+#from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+
 
 #import the initials datasets
 
