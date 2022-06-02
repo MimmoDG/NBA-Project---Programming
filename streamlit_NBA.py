@@ -318,6 +318,9 @@ if sec == 'LeBron James exploration and analysis':
 if sec == 'Predictive model for LeBron James':
     st.header('Predictive model for LeBron James')
 
+# mettere i modelli che ci sono sull'ipynb generici con la possibilità di scegliere la statistica da predire con anche la possibilità di mettere dei valori in input ecc
+# vedere che modelli mettere, capire che altre analisi vanno fatte e se sono abbastanza
+
 if sec == 'Season 2020/2021 exploration and analysis':
     st.header('Season 2020/2021 exploration and analysis')
 
@@ -328,3 +331,6 @@ if sec == 'Season 2020/2021 exploration and analysis':
 
 if sec == 'Predictive model for Season 2020/2021':
     st.header('Predictive model for Season 2020/2021')
+
+# mettere i modelli che ci sono sull'ipynb generici con la possibilità di scegliere la statistica da predire con anche la possibilità di mettere dei valori in input ecc
+# vedere che modelli mettere, capire che altre analisi vanno fatte e se sono abbastanza
