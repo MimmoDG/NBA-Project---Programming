@@ -1,5 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import seaborn as sb
 import streamlit as st
 import sklearn as sk
 from sklearn.model_selection import train_test_split
@@ -288,8 +289,20 @@ if sec == 'LeBron James exploration and analysis':
       plt.ylabel(x)
       plt.xticks(rotation=45)
       st.pyplot(fig)
+
+      st.write('''
+      After showing these statistics now will be presented some histograms in order to show other features of LeBron.
+      ''')
+      #migliorare la parte scritta prima degli istogrammi
+      fig = LeB_C_PG_RS[['PTS', 'AST', 'TRB', 'FG', 'STL', 'TOV']].hist(bins=20, figsize=(12, 8))
+      st.pyplot(fig)
+      #verificare che sia giusta la scrittura
+      st.write('''
+      ''')
+      #analisi conclusiva sugli istogrammi
+
     
-    if 'Totals Stats':
+    if selection == 'Totals Stats':
       x = st.selectbox('Choose a Stat', LeB_C_Tot_RS.columns.drop(['Season', 'Tm', 'Pos']).tolist(), key=0)
 
       y = st.selectbox('Choose a feature', ['Max', 'Min', 'Mean'], key=1)
@@ -317,8 +330,82 @@ if sec == 'LeBron James exploration and analysis':
       plt.ylabel(x)
       plt.xticks(rotation=45)
       st.pyplot(fig)
+      
+      st.write('''
+      After showing these statistics now will be presented some histograms in order to show other features of LeBron.
+      ''')
+      #migliorare la parte scritta prima degli istogrammi
+      fig = LeB_C_Tot_RS[['PTS', 'AST', 'TRB', 'FG', 'STL', 'TOV']].hist(bins=20, figsize=(12, 8))
+      st.pyplot(fig)
+      #verificare che sia giusta la scrittura
+      st.write('''
+      ''')
+      #analisi conclusiva sugli istogrammi
 
-# show other features, other stats analysed
+
+    #st.write con spiegazione delle correlazioni e plot
+    LeB_C_PG_RS.corr()
+    plt.figure(figsize=(18, 14))
+    sb.heatmap(LeB_C_PG_RS.corr(), annot=True)
+
+    #st.write con spiegazione del pie plot sulle squadre 
+    Team = list(LeB_C_PG_RS['Tm'])
+    CLE = Team.count('CLE')
+    MIA = Team.count('MIA')
+    LAL = Team.count('LAL')
+
+    Teams = ['CLE', 'MIA', 'LAL']
+    count = [CLE, MIA, LAL]
+    fig = plt.figure(figsize=(10,6))
+    plt.pie(count, labels=Teams, autopct='%.2f%%', shadow=True)
+    st.pyplot(fig)
+
+    #stats medie divise per squadra
+    #st.write con spiegazione e dire che sono stats per game
+    stat = st.selectbox('Choose a Stat', LeB_C_PG_RS.columns.drop(['Season', 'Tm', 'Pos']).tolist(), key=3)
+    a = LeB_C_PG_RS[stat].head(7).mean() #medie ai cavs (prima esperienza)
+    b = LeB_C_PG_RS[stat].iloc[7:11].mean() #medie agli heat
+    c = LeB_C_PG_RS[stat].iloc[11:15].mean() #medie ai cavs (seconda esperienza)
+    d = LeB_C_PG_RS[stat].tail(4).mean() #medie ai lakers
+    [a, b, c, d]
+    #da mettere a posto
+
+    #st.write con spiegazione del pie plot sui ruoli 
+    Pos = list(LeB_C_PG_RS['Pos'])
+    PG = Pos.count('PG')
+    PF = Pos.count('PF')
+    SG = Pos.count('SG')
+    SF = Pos.count('SF')
+
+    Positions = ['PG', 'PF', 'SG', 'SF']
+    count = [PG, PF, SG, SF]
+    fig = plt.figure(figsize=(10,6))
+    plt.pie(count, labels=Positions, autopct='%.2f%%', shadow=True)
+    st.pyplot(fig)
+
+    #stats medie divise per ruolo
+    #st.write con spiegazione e dire che sono stats per game
+    stat = st.selectbox('Choose a Stat', LeB_C_PG_RS.columns.drop(['Season', 'Tm', 'Pos']).tolist(), key=3)
+    a = LeB_C_PG_RS[stat].head(7).mean() #medie ai cavs (prima esperienza)
+    b = LeB_C_PG_RS[stat].iloc[7:11].mean() #medie agli heat
+    c = LeB_C_PG_RS[stat].iloc[11:15].mean() #medie ai cavs (seconda esperienza)
+    d = LeB_C_PG_RS[stat].tail(4).mean() #medie ai lakers
+    [a, b, c, d]
+    #da mettere a posto
+    
+    #show plot misto con più di una stat (le percentuali tutte insieme o altro)
+    for x in LeB_C_PG_RS.columns.drop(['Season', 'Tm', 'Pos']).tolist():
+      Season = list(LeB_C_Tot_RS['Season'])
+      Peppino = list(LeB_C_Tot_RS[x])
+      fig = plt.figure(figsize=(10, 6))
+      plt.plot(Season, Peppino, '-o')
+      plt.title('LeBron ' + x + ' averages in every season')
+      plt.xlabel('Seasons')
+      plt.ylabel(x)
+      plt.xticks(rotation=45)
+      st.pyplot(fig)
+
+# show other features, other stats analyzed
 # plots su Teams and Pos + stats on the same columns
 # plot misti con più stats (FG%, 3P%, 2P%, FT%) etc.
 # plot distribuzioni (hist, di tutte le variabili)
