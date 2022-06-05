@@ -77,14 +77,15 @@ xG_Stats_1['FT%'].fillna(0, inplace=True)
 # --> second dataset season 2020/21
 
 Adv_Stats = or_Adv_Stats_df.where(or_Adv_Stats_df["Player"] != "Player").dropna(how='all',axis=0)
-for el in Adv_Stats:
-  if(el != "Player" and el != "Pos"  and el != "Tm"):
-    Adv_Stats[el] = pd.to_numeric(Adv_Stats[el])
 Adv_Stats.drop(['Rk', 'Unnamed: 19', 'Unnamed: 24'], axis=1, inplace=True)
-Adv_Stats['TOV%'].fillna(0, inplace=True)
-Adv_Stats['TS%'].fillna(0, inplace=True)
-Adv_Stats['3PAr'].fillna(0, inplace=True)
-Adv_Stats['FTr'].fillna(0, inplace=True)
+Adv_Stats_1 = Adv_Stats.where(xG_Stats["Tm"] != "TOT").dropna(how='all', axis=0)
+for el in Adv_Stats_1:
+  if(el != "Player" and el != "Pos"  and el != "Tm"):
+    Adv_Stats_1[el] = pd.to_numeric(Adv_Stats_1[el])
+Adv_Stats_1['TOV%'].fillna(0, inplace=True)
+Adv_Stats_1['TS%'].fillna(0, inplace=True)
+Adv_Stats_1['3PAr'].fillna(0, inplace=True)
+Adv_Stats_1['FTr'].fillna(0, inplace=True)
 
 
 #import the finals datasets
@@ -222,20 +223,32 @@ if sec == 'Data cleaning':
 
     with st.expander('Final LeBron James Datasets'):
           st.write('The two final datasets for the LeBron James Analysis are here attacched.')
+
           st.download_button('Download CSV', final_LBJ_xG_df.to_csv(index=False))
           st.write(''' For the 'Per Game' stats are been made few changes: 
           The first one change all the stats that are tipically numeric, but initially stored as object, from object to numeric datatype. 
           Secondly, are deleted the summary rows containing the whole career and the different teams he played for.
           Lastly, are deleted three variables that are not significant for the analysis or redundant: Age, GS and Lg.
           ''')
+          st.write('''
+          ''')
+          st.pyplot(LeB_C_PG_RS.describe()) #controllare se il comando è giusto
+          #describe del dataset finale di LeB xG Stats
+
           st.download_button('Download CSV', final_LBJ_Tot_df.to_csv(index=False))
           st.write(''' As for the first dataset, also for the 'Totals' stats haven't been made a lot of changes:
           As for the previous dataset the first step is about the datatype of the different stats, changing it from object to numeric.
           Also the second step is equal, with the deletion of the summary rows.
           The third and last step is different from the 'Per Game' dataset, in fact in it are deleted some variables not so significant for the analysis and those are: Age, GS, Lg, Unnamed: 30 and Trp Dbl.
           ''')
+          st.write('''
+          ''')
+          st.pyplot(LeB_C_Tot_RS.describe()) #controllare se il comando è giusto
+          #describe del dataset finale di LeB Tot Stats
+
     with st.expander('Final Season 2020/2021 Datasets'):
           st.write('The two final datasets for the Season 2020/2021 Analysis are here attacched.')
+
           st.download_button('Download CSV', xG_Stats_1_df.to_csv(index=False))
           st.write(''' For the 'Per Game' stats have been made different changes:
           Firstly, the rows containing the variables names repeated every twenty players have been dropped.
@@ -245,6 +258,11 @@ if sec == 'Data cleaning':
           Lastly, all the null value in the percentages have been filled with zero in order to allow comparison also between players who don't shoot from the 3-point line, for example.
           So the final dataset is prepared and it has been changed accordingly to what feature was relevant for every analysis done on it.
           ''')
+          st.write('''
+          ''')
+          st.pyplot(xG_Stats_1.describe()) #controllare se il comando è giusto
+          #describe del dataset finale di xGStats
+
           st.download_button('Download CSV', Adv_Stats_1_df.to_csv(index=False))
           st.write(''' For the 'Advanced' stats have been made similar changes to the 'Per Game' dataset.
           Firstly, as in the previous dataset, have been dropped all the rows containing the name of the variables repeated every twenty players.
@@ -253,8 +271,14 @@ if sec == 'Data cleaning':
           Lastly, all the null value in the percentages have been filled with zero in order to allow comparison also between players who don't shoot from the 3-point line, for example.
           So the final dataset is prepared and it has been changed accordingly to what feature was relevant for every analysis done on it.
           ''')
+          st.write('''
+          ''')
+          st.pyplot(Adv_Stats_1.describe()) #controllare se il comando è giusto
+          #describe del dataset finale di AdvStats
+
 # forse mettere le heatmap con qualche spiegazione oppure nelle sezioni giuste          
 # mettere nelle singole sezioni le sotto tabelline fatte ma non nella parte di data cleaning dato che non sono salvataggi
+# mettere il describe con i vari dataset per far vedere le variabili 
 
 if sec == 'LeBron James exploration and analysis':
     st.header('LeBron James exploration and analysis')
