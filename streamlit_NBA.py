@@ -121,11 +121,13 @@ if sec == 'Data cleaning':
             ''')
 
     with st.expander('The LeBron James Career dataset based on Per Game stats for season'):
+            st.header('The LeBron James Career dataset based on Per Game stats for season')
             st.write('The dataset is available on Basketball Reference at https://www.basketball-reference.com/players/j/jamesle01.html. It is the first table in the web page and it is an html file because LeBron is still playing, then his stats are increasing and changing day by day.')
             st.download_button('Download CSV', LBJ_xGStats_df.to_csv(index=False))
             st.write('It contains all the stats during the whole career of LeBron James taken with the per game stats per season and it is still in update because he is still playing.')
 
     with st.expander('The LeBron James Career dataset based on Totals stats for season'):
+            st.header('The LeBron James Career dataset based on Totals stats for season')
             st.write('The dataset is available on Basketball Reference at https://www.basketball-reference.com/players/j/jamesle01.html. It is the third table in the web page and it is an html file because LeBron is still playing, then his stats are increasing and changing day by day.')
             st.download_button('Download CSV', LBJ_TotStats_df.to_csv(index=False))
             st.write('It contains all the stats during the whole career of LeBron James taken with the totals per season and it is still in update because he is still playing.')
@@ -161,6 +163,7 @@ if sec == 'Data cleaning':
             ''')
 
     with st.expander('The Per Game Stats dataset'):
+            st.header('The Per Game Stats dataset')
             st.write('The dataset is available on Basketball Reference at https://www.basketball-reference.com/leagues/NBA_2021_per_game.html. It is the first table in the web page and before turning the html dataframe into csv file I had to erase and clean some stats and some inaccuracies. You can download the raw data here.')
             st.download_button('Download CSV', original_xGStats_df.to_csv(index=False))
             st.write('It contains all the usual stats provided to analyse the whole season 2020/2021, like points, rebounds, assists and so on.')
@@ -173,6 +176,7 @@ if sec == 'Data cleaning':
             ''')
 
     with st.expander('The Advanced Stats dataset'):
+            st.header('The Advanced Stats dataset')
             st.write('The dataset is available on Basketball Reference at https://www.basketball-reference.com/leagues/NBA_2021_advanced.html. It is the first table in the web page and before turning the html dataframe into csv file I had to erase and clean some stats and some inaccuracies. You can download the raw data here.')
             st.download_button('Download CSV', original_AdvStats_df.to_csv(index=False))
             st.write('It contains specific stats based on advanced analysis about the whole season 2020/2021, and unlike the previous stats these are established only when the season is finished. Some of these stats are win share, box plus minus and others.')
@@ -222,7 +226,8 @@ if sec == 'Data cleaning':
     # brief explenation of the steps done
 
     with st.expander('Final LeBron James Datasets'):
-          st.write('The two final datasets for the LeBron James Analysis are here attacched.')
+          st.header('Final LeBron James Datasets')
+          st.write('The two final datasets for the LeBron James Analysis are here attached.')
 
           st.download_button('Download CSV', final_LBJ_xG_df.to_csv(index=False))
           st.write(''' For the 'Per Game' stats are been made few changes: 
@@ -230,10 +235,10 @@ if sec == 'Data cleaning':
           Secondly, are deleted the summary rows containing the whole career and the different teams he played for.
           Lastly, are deleted three variables that are not significant for the analysis or redundant: Age, GS and Lg.
           ''')
-          st.write('''
+          st.write(''' Here is attached a description of the variables with the main percentiles, the mean and the count.
+          With this description is easier to analize the data for the analysis.
           ''')
-          st.pyplot(LeB_C_PG_RS.describe()) #controllare se il comando è giusto
-          #describe del dataset finale di LeB xG Stats
+          st.dataframe(LeB_C_PG_RS.describe()) 
 
           st.download_button('Download CSV', final_LBJ_Tot_df.to_csv(index=False))
           st.write(''' As for the first dataset, also for the 'Totals' stats haven't been made a lot of changes:
@@ -241,13 +246,14 @@ if sec == 'Data cleaning':
           Also the second step is equal, with the deletion of the summary rows.
           The third and last step is different from the 'Per Game' dataset, in fact in it are deleted some variables not so significant for the analysis and those are: Age, GS, Lg, Unnamed: 30 and Trp Dbl.
           ''')
-          st.write('''
+          st.write(''' Here is attached a description of the variables with the main percentiles, the mean and the count.
+          With this description is easier to analize the data for the analysis.
           ''')
-          st.pyplot(LeB_C_Tot_RS.describe()) #controllare se il comando è giusto
-          #describe del dataset finale di LeB Tot Stats
+          st.dataframe(LeB_C_Tot_RS.describe()) 
 
     with st.expander('Final Season 2020/2021 Datasets'):
-          st.write('The two final datasets for the Season 2020/2021 Analysis are here attacched.')
+          st.header('Final Season 2020/2021 Datasets')
+          st.write('The two final datasets for the Season 2020/2021 Analysis are here attached.')
 
           st.download_button('Download CSV', xG_Stats_1_df.to_csv(index=False))
           st.write(''' For the 'Per Game' stats have been made different changes:
@@ -258,10 +264,10 @@ if sec == 'Data cleaning':
           Lastly, all the null value in the percentages have been filled with zero in order to allow comparison also between players who don't shoot from the 3-point line, for example.
           So the final dataset is prepared and it has been changed accordingly to what feature was relevant for every analysis done on it.
           ''')
-          st.write('''
+          st.write(''' Here is attached a description of the variables with the main percentiles, the mean and the count.
+          With this description is easier to analize the data for the analysis.
           ''')
-          st.pyplot(xG_Stats_1.describe()) #controllare se il comando è giusto
-          #describe del dataset finale di xGStats
+          st.dataframe(xG_Stats_1.describe()) 
 
           st.download_button('Download CSV', Adv_Stats_1_df.to_csv(index=False))
           st.write(''' For the 'Advanced' stats have been made similar changes to the 'Per Game' dataset.
@@ -271,10 +277,10 @@ if sec == 'Data cleaning':
           Lastly, all the null value in the percentages have been filled with zero in order to allow comparison also between players who don't shoot from the 3-point line, for example.
           So the final dataset is prepared and it has been changed accordingly to what feature was relevant for every analysis done on it.
           ''')
-          st.write('''
+          st.write(''' Here is attached a description of the variables with the main percentiles, the mean and the count.
+          With this description is easier to analize the data for the analysis.
           ''')
-          st.pyplot(Adv_Stats_1.describe()) #controllare se il comando è giusto
-          #describe del dataset finale di AdvStats
+          st.dataframe(Adv_Stats_1.describe()) 
 
 # forse mettere le heatmap con qualche spiegazione oppure nelle sezioni giuste          
 # mettere nelle singole sezioni le sotto tabelline fatte ma non nella parte di data cleaning dato che non sono salvataggi
@@ -350,7 +356,6 @@ if sec == 'LeBron James exploration and analysis':
     ''')
     fig = LeB_C_PG_RS[['PTS', 'AST', 'TRB', 'FG', '3P', 'STL', 'TOV', 'BLK']].hist(bins=20, figsize=(14, 10))
     st.pyplot(fig)
-    #verificare che sia giusta la scrittura
     st.write(''' As we can see from this histograms there is no big variance in the distribution of these variables, because they are, with the exception of some outlier, quite similar and show a kind of trend in his career.
     For example: PTS are distribuited between 25 and 31, TRB are distribuited between 7 and 8.5 and FG are distribuited between 9 and 10.5.
     So, it can be confirmed that LeBron usually performs in a quite well defined range and also these ranges are higher than the most number of players confirming that LeBron is a superstar in the NBA.  
