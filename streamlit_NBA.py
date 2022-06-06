@@ -278,7 +278,7 @@ if sec == 'Data cleaning':
 
 # forse mettere le heatmap con qualche spiegazione oppure nelle sezioni giuste          
 # mettere nelle singole sezioni le sotto tabelline fatte ma non nella parte di data cleaning dato che non sono salvataggi
-# mettere il describe con i vari dataset per far vedere le variabili 
+# controllare se il describe con i vari dataset è giusto per far vedere le variabili 
 
 if sec == 'LeBron James exploration and analysis':
     st.header('LeBron James exploration and analysis')
@@ -314,17 +314,6 @@ if sec == 'LeBron James exploration and analysis':
       plt.xticks(rotation=45)
       st.pyplot(fig)
 
-      st.write('''
-      After showing these statistics now will be presented some histograms in order to show other features of LeBron.
-      ''')
-      #migliorare la parte scritta prima degli istogrammi
-      fig = LeB_C_PG_RS[['PTS', 'AST', 'TRB', 'FG', 'STL', 'TOV']].hist(bins=20, figsize=(12, 8))
-      st.pyplot(fig)
-      #verificare che sia giusta la scrittura
-      st.write('''
-      ''')
-      #analisi conclusiva sugli istogrammi
-
     
     if selection == 'Totals Stats':
       x = st.selectbox('Choose a Stat', LeB_C_Tot_RS.columns.drop(['Season', 'Tm', 'Pos']).tolist(), key=0)
@@ -355,22 +344,29 @@ if sec == 'LeBron James exploration and analysis':
       plt.xticks(rotation=45)
       st.pyplot(fig)
       
-      st.write('''
-      After showing these statistics now will be presented some histograms in order to show other features of LeBron.
-      ''')
-      #migliorare la parte scritta prima degli istogrammi
-      fig = LeB_C_Tot_RS[['PTS', 'AST', 'TRB', 'FG', 'STL', 'TOV']].hist(bins=20, figsize=(12, 8))
-      st.pyplot(fig)
-      #verificare che sia giusta la scrittura
-      st.write('''
-      ''')
-      #analisi conclusiva sugli istogrammi
-
+    st.write('''
+    After showing these statistics now will be presented some histograms of the main variables used for the analysis.
+    For the histograms are used the 'Per Game' statistics and the main variables included are: PTS, AST, TRB, FG, 3P, STL, TOV and BLK. 
+    ''')
+    fig = LeB_C_PG_RS[['PTS', 'AST', 'TRB', 'FG', '3P', 'STL', 'TOV', 'BLK']].hist(bins=20, figsize=(14, 10))
+    st.pyplot(fig)
+    #verificare che sia giusta la scrittura
+    st.write(''' As we can see from this histograms there is no big variance in the distribution of these variables, because they are, with the exception of some outlier, quite similar and show a kind of trend in his career.
+    For example: PTS are distribuited between 25 and 31, TRB are distribuited between 7 and 8.5 and FG are distribuited between 9 and 10.5.
+    So, it can be confirmed that LeBron usually performs in a quite well defined range and also these ranges are higher than the most number of players confirming that LeBron is a superstar in the NBA.  
+    ''')
 
     #st.write con spiegazione delle correlazioni e plot
+    st.write(''' Now will be shown the correlation heatmap of the variables in the 'Per Game' dataset.
+    In this way, it will be possibile to understand how the different variables relates each other and how they do this.
+    Firstly it will be presented the whole dataset, then it will be proposed a more specific case with less variables.
+    ''')
     LeB_C_PG_RS.corr()
     plt.figure(figsize=(18, 14))
     sb.heatmap(LeB_C_PG_RS.corr(), annot=True)
+    st.write('''As  
+    ''')
+    #continuare descrizione e fare l'altra correlazione
 
     #st.write con spiegazione del pie plot sulle squadre 
     Team = list(LeB_C_PG_RS['Tm'])
