@@ -354,7 +354,31 @@ if sec == 'LeBron James exploration and analysis':
     After showing these statistics now will be presented some histograms of the main variables used for the analysis.
     For the histograms are used the 'Per Game' statistics and the main variables included are: PTS, AST, TRB, FG, 3P, STL, TOV and BLK. 
     ''')
-    fig = LeB_C_PG_RS[['PTS', 'AST', 'TRB', 'FG', '3P', 'STL', 'TOV', 'BLK']].hist(bins=20, figsize=(14, 10))
+    fig = plt.figure(figsize=(14,12))
+    plt.subplot(421)
+    plt.title('PTS')
+    plt.hist(LeB_C_PG_RS['PTS'], bins=20)
+    plt.subplot(422)
+    plt.title('AST')
+    plt.hist(LeB_C_PG_RS['AST'], bins=20)
+    plt.subplot(423)
+    plt.title('TRB')
+    plt.hist(LeB_C_PG_RS['TRB'], bins=20)
+    plt.subplot(424)
+    plt.title('FG')
+    plt.hist(LeB_C_PG_RS['FG'], bins=20)
+    plt.subplot(425)
+    plt.title('3P')
+    plt.hist(LeB_C_PG_RS['3P'], bins=20)
+    plt.subplot(426)
+    plt.title('STL')
+    plt.hist(LeB_C_PG_RS['STL'], bins=20)
+    plt.subplot(427)
+    plt.title('TOV')
+    plt.hist(LeB_C_PG_RS['TOV'], bins=20)
+    plt.subplot(428)
+    plt.title('BLK')
+    plt.hist(LeB_C_PG_RS['BLK'], bins=20)
     st.pyplot(fig)
     st.write(''' As we can see from this histograms there is no big variance in the distribution of these variables, because they are, with the exception of some outlier, quite similar and show a kind of trend in his career.
     For example: PTS are distribuited between 25 and 31, TRB are distribuited between 7 and 8.5 and FG are distribuited between 9 and 10.5.
@@ -369,8 +393,10 @@ if sec == 'LeBron James exploration and analysis':
     LeB_C_PG_RS.corr()
     plt.figure(figsize=(18, 14))
     sb.heatmap(LeB_C_PG_RS.corr(), annot=True)
-    st.write('''As  
+    st.write('''As we can see from the heatmap some variables are really correlated each other and it was predictable because some of them were connected.
+    Now will be shown a restricted heatmap with the main variables of the dataset and how they are correlated each other.
     ''')
+    #nuova heatmap
     #continuare descrizione e fare l'altra correlazione
 
     #st.write con spiegazione del pie plot sulle squadre 
@@ -382,7 +408,7 @@ if sec == 'LeBron James exploration and analysis':
     Teams = ['CLE', 'MIA', 'LAL']
     count = [CLE, MIA, LAL]
     fig = plt.figure(figsize=(10,6))
-    plt.pie(count, labels=Teams, autopct='%.2f%%', shadow=True)
+    plt.pie(count, labels=Teams, autopct='%.2f%%')
     st.pyplot(fig)
 
     #stats medie divise per squadra
@@ -394,6 +420,7 @@ if sec == 'LeBron James exploration and analysis':
     d = LeB_C_PG_RS[stat].tail(4).mean() #medie ai lakers
     [a, b, c, d]
     #da mettere a posto
+    #migliorare output
 
     #st.write con spiegazione del pie plot sui ruoli 
     Pos = list(LeB_C_PG_RS['Pos'])
@@ -405,12 +432,12 @@ if sec == 'LeBron James exploration and analysis':
     Positions = ['PG', 'PF', 'SG', 'SF']
     count = [PG, PF, SG, SF]
     fig = plt.figure(figsize=(10,6))
-    plt.pie(count, labels=Positions, autopct='%.2f%%', shadow=True)
+    plt.pie(count, labels=Positions, autopct='%.2f%%')
     st.pyplot(fig)
 
     #stats medie divise per ruolo
     #st.write con spiegazione e dire che sono stats per game
-    stat = st.selectbox('Choose a Stat', LeB_C_PG_RS.columns.drop(['Season', 'Tm', 'Pos']).tolist(), key=3)
+    stat = st.selectbox('Choose a Stat', LeB_C_PG_RS.columns.drop(['Season', 'Tm', 'Pos']).tolist(), key=4)
     a = LeB_C_PG_RS[stat].head(7).mean() #medie ai cavs (prima esperienza)
     b = LeB_C_PG_RS[stat].iloc[7:11].mean() #medie agli heat
     c = LeB_C_PG_RS[stat].iloc[11:15].mean() #medie ai cavs (seconda esperienza)
