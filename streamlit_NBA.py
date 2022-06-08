@@ -349,7 +349,8 @@ if sec == 'LeBron James exploration and analysis':
       plt.ylabel(x)
       plt.xticks(rotation=45)
       st.pyplot(fig)
-      
+
+    st.subheader('Variables Histograms') 
     st.write('''
     After showing these statistics now will be presented some histograms of the main variables used for the analysis.
     For the histograms are used the 'Per Game' statistics and the main variables included are: PTS, AST, TRB, FG, 3P, STL, TOV and BLK. 
@@ -385,21 +386,32 @@ if sec == 'LeBron James exploration and analysis':
     So, it can be confirmed that LeBron usually performs in a quite well defined range and also these ranges are higher than the most number of players confirming that LeBron is a superstar in the NBA.  
     ''')
 
-    #st.write con spiegazione delle correlazioni e plot
+    st.subheader('Correlation Analysis')
     st.write(''' Now will be shown the correlation heatmap of the variables in the 'Per Game' dataset.
     In this way, it will be possibile to understand how the different variables relates each other and how they do this.
     Firstly it will be presented the whole dataset, then it will be proposed a more specific case with less variables.
     ''')
-    LeB_C_PG_RS.corr()
-    plt.figure(figsize=(18, 14))
+    fig = plt.figure(figsize=(12, 10))
+    plt.subplot(111)
     sb.heatmap(LeB_C_PG_RS.corr(), annot=True)
-    st.write('''As we can see from the heatmap some variables are really correlated each other and it was predictable because some of them were connected.
+    st.pyplot(fig)
+    st.write('''As we can see from the heatmap some variables are really correlated each other and it was predictable because some of them are connected.
     Now will be shown a restricted heatmap with the main variables of the dataset and how they are correlated each other.
     ''')
-    #nuova heatmap
-    #continuare descrizione e fare l'altra correlazione
+    fig = plt.figure(figsize=(12, 10))
+    plt.subplot(111)
+    sb.heatmap(LeB_C_PG_RS.drop(columns=['ORB', 'DRB', 'FG', 'FGA', '3P', '3PA', '2P', '2PA', 'FT', 'FTA', 'PF']).corr(), annot=True)
+    st.pyplot(fig)
+    st.write('''Now is easier to see and recognise a relationship between the different variables. 
+    So, now we can see that the percentages are correlated each other and this was predictable, then also MP and STL are correlated and this seems strange but also reasonable.
+    MP is also negative correlated to many variables, AST and TRB are quite correlated and so on.
+    From the heatmap we can understand many features of the dataset and how it works. 
+    ''')
 
-    #st.write con spiegazione del pie plot sulle squadre 
+    st.subheader('Analysis with Team') 
+    st.write(''' Here will be presented an analysis concerning the three teams with LeBron James played in the league.
+    For these teams will be shown some plots and a comparison of his trends in the different experiences with this teams.
+    ''')
     Team = list(LeB_C_PG_RS['Tm'])
     CLE = Team.count('CLE')
     MIA = Team.count('MIA')
@@ -412,17 +424,23 @@ if sec == 'LeBron James exploration and analysis':
     st.pyplot(fig)
 
     #stats medie divise per squadra
-    #st.write con spiegazione e dire che sono stats per game
+    st.write(''' From this pie chart we can see that he played most time at Cleveland Cavaliers and spent just four seasons for the other teams each.
+    Now we will see how the mean of his statistics are divided between the different experiences he made during his career.
+    There are four outputs because the cavs experience is splitted in two parts according to direct succession of the team change made by him.
+    He was drafted by Cavs then he went to Heat and after this experience he came back to Cavs and after four years he went to Lakers where he still is. 
+    ''')
     stat = st.selectbox('Choose a Stat', LeB_C_PG_RS.columns.drop(['Season', 'Tm', 'Pos']).tolist(), key=3)
-    a = LeB_C_PG_RS[stat].head(7).mean() #medie ai cavs (prima esperienza)
-    b = LeB_C_PG_RS[stat].iloc[7:11].mean() #medie agli heat
-    c = LeB_C_PG_RS[stat].iloc[11:15].mean() #medie ai cavs (seconda esperienza)
-    d = LeB_C_PG_RS[stat].tail(4).mean() #medie ai lakers
-    [a, b, c, d]
-    #da mettere a posto
+    Cavs_1 = LeB_C_PG_RS[stat].head(7).mean() #medie ai cavs (prima esperienza)
+    Heat = LeB_C_PG_RS[stat].iloc[7:11].mean() #medie agli heat
+    Cavs_2 = LeB_C_PG_RS[stat].iloc[11:15].mean() #medie ai cavs (seconda esperienza)
+    Lakers = LeB_C_PG_RS[stat].tail(4).mean() #medie ai lakers
+    [Cavs_1, Heat, Cavs_2, Lakers]
     #migliorare output
 
-    #st.write con spiegazione del pie plot sui ruoli 
+    st.subheader('Analys with Pos')
+    st.write(''' In this subsection will be shown an analysis of the LeBron trends according to the different roles he played during his whole career.
+    As for the analysis for the teams also in this case will be presented some plots and a comparison of his trends.
+    ''')
     Pos = list(LeB_C_PG_RS['Pos'])
     PG = Pos.count('PG')
     PF = Pos.count('PF')
@@ -436,31 +454,64 @@ if sec == 'LeBron James exploration and analysis':
     st.pyplot(fig)
 
     #stats medie divise per ruolo
-    #st.write con spiegazione e dire che sono stats per game
+    st.write(''' From this pie chart we can see that he played the most time of his career as SF, but anyway he changed many roles, showing how he is versatile.
+    Now we will analyse the mean of his statistics accordingly to the role he played that season showing how he changed his trends also because of the role.
+    ''')
     stat = st.selectbox('Choose a Stat', LeB_C_PG_RS.columns.drop(['Season', 'Tm', 'Pos']).tolist(), key=4)
-    a = LeB_C_PG_RS[stat].head(7).mean() #medie ai cavs (prima esperienza)
-    b = LeB_C_PG_RS[stat].iloc[7:11].mean() #medie agli heat
-    c = LeB_C_PG_RS[stat].iloc[11:15].mean() #medie ai cavs (seconda esperienza)
-    d = LeB_C_PG_RS[stat].tail(4).mean() #medie ai lakers
-    [a, b, c, d]
-    #da mettere a posto
+    elenco = []
+    for Pos in LeB_C_PG_RS['Pos']:  
+      a = LeB_C_PG_RS[stat].mean() #medie per i diversi ruoli
+      elenco.append(a)
+    elenco
+    #da mettere a posto il codice perchè è sbagliato l'output
     
-    #show plot misto con più di una stat (le percentuali tutte insieme o altro)
-    for x in LeB_C_PG_RS.columns.drop(['Season', 'Tm', 'Pos']).tolist():
-      Season = list(LeB_C_Tot_RS['Season'])
-      Peppino = list(LeB_C_Tot_RS[x])
-      fig = plt.figure(figsize=(10, 6))
-      plt.plot(Season, Peppino, '-o')
-      plt.title('LeBron ' + x + ' averages in every season')
-      plt.xlabel('Seasons')
-      plt.ylabel(x)
-      plt.xticks(rotation=45)
-      st.pyplot(fig)
+    #show plot misto con più di una stat
+    st.write(''' After all this analysis will be provided some mixed plots containing more variables just to show the trend of these variables.
+    For example, the first plot contains the percentages of shooting, the second contains a comparison between assists and rebounds and the last one shows the comparison between steels and turnovers
+    ''')
+    Season = list(LeB_C_PG_RS['Season'])
+    DPP = list(LeB_C_PG_RS['2P%'])
+    TPP = list(LeB_C_PG_RS['3P%'])
+    FGP = list(LeB_C_PG_RS['FG%'])
+    FTP = list(LeB_C_PG_RS['FT%'])
+    AST = list(LeB_C_PG_RS['AST'])
+    TRB = list(LeB_C_PG_RS['TRB'])
+    STL = list(LeB_C_PG_RS['STL'])
+    TOV = list(LeB_C_PG_RS['TOV'])
 
-# show other features, other stats analyzed
-# plots su Teams and Pos + stats on the same columns
-# plot misti con più stats (FG%, 3P%, 2P%, FT%) etc.
-# plot distribuzioni (hist, di tutte le variabili)
+    fig = plt.figure(figsize=(10, 6))
+    plt.plot(Season, DPP, '-o', label='2P%')
+    plt.plot(Season, TPP, '-o', label='3P%')
+    plt.plot(Season, FGP, '-o', label='FG%')
+    plt.plot(Season, FTP, '-o', label='FT%')
+    plt.title('LeBron accuracy % in every season')
+    plt.xlabel('Seasons')
+    plt.ylabel('Shooting percentages')
+    plt.legend()
+    plt.xticks(rotation=45)
+    st.pyplot(fig)
+    
+    fig = plt.figure(figsize=(10, 6))
+    plt.plot(Season, AST, '-o', label='AST')
+    plt.plot(Season, TRB, '-*', label='TRB')
+    plt.title('LeBron AST/TRB averages in every season')
+    plt.xlabel('Seasons')
+    plt.ylabel('AST-TRB')
+    plt.xticks(rotation=45)
+    plt.legend()
+    st.pyplot(fig)
+
+    fig = plt.figure(figsize=(10, 6))
+    plt.plot(Season, STL, '-o', label='STL')
+    plt.plot(Season, TOV, '-o', label='TOV')
+    plt.title('LeBron STL/TOV averages in every season')
+    plt.xlabel('Seasons')
+    plt.ylabel('STL/TOV')
+    plt.legend()
+    plt.xticks(rotation=45)
+    st.pyplot(fig)
+
+# controllare solo un selectbox da migliorare per l'analisi con i ruoli
 
 if sec == 'Predictive model for LeBron James':
     st.header('Predictive model for LeBron James')
@@ -471,6 +522,50 @@ if sec == 'Predictive model for LeBron James':
 if sec == 'Season 2020/2021 exploration and analysis':
     st.header('Season 2020/2021 exploration and analysis')
 
+    selection = st.radio('Choose a dataset', ('Per Game stats dataset', 'Advanced stats dataset'))
+
+    if selection == 'Per Game stats dataset':
+
+      x = st.selectbox('Choose a Stat', xG_Stats_1.columns.drop(['Player', 'Pos', 'Tm']).tolist(), key=0)
+      y = st.selectbox('Choose a feature', ['Max', 'Min', 'Mean'], key=1)
+
+      if y == 'Max':
+        ms = xG_Stats_1[x].max()
+        num = int(xG_Stats_1[xG_Stats_1[x]==ms].index.to_list()[0])
+        a = xG_Stats_1.loc[num,'Player']
+        st.write('The max for this statistic is: ', a, '. The max for this stat is: ', str(ms)) 
+      if y == 'Min':
+        ms = xG_Stats_1[x].min()
+        num = int(xG_Stats_1[xG_Stats_1[x]==ms].index.to_list()[0])
+        a = xG_Stats_1.loc[num, 'Player']
+        st.write('The min for this statistic is: ', a, '. The min for this stat is: ', str(ms)) 
+      if y == 'Mean':
+        ms = xG_Stats_1[x].mean()
+        st.write('The mean for this statistic is: ', str(ms))
+
+      #altre cose con per game dataset
+
+    if selection == 'Advanced stats dataset':
+
+      x = st.selectbox('Choose a Stat', Adv_Stats_1.columns.drop(['Player', 'Pos', 'Tm']).tolist(), key=0)
+      y = st.selectbox('Choose a feature', ['Max', 'Min', 'Mean'], key=1)
+
+      if y == 'Max':
+        ms = Adv_Stats_1[x].max()
+        num = int(Adv_Stats_1[Adv_Stats_1[x]==ms].index.to_list()[0])
+        a = Adv_Stats_1.loc[num,'Player']
+        st.write('The max for this statistic is: ', a, '. The max for this stat is: ', str(ms)) 
+      if y == 'Min':
+        ms = Adv_Stats_1[x].min()
+        num = int(Adv_Stats_1[Adv_Stats_1[x]==ms].index.to_list()[0])
+        a = Adv_Stats_1.loc[num, 'Player']
+        st.write('The min for this statistic is: ', a, '. The min for this stat is: ', str(ms)) 
+      if y == 'Mean':
+        ms = Adv_Stats_1[x].mean()
+        st.write('The mean for this statistic is: ', str(ms))
+      
+      #altre cose con advanced dataset
+      
 # show other features, other stats analysed
 # plots su Teams and Pos + stats on the same columns
 # plot misti con più stats (FG%, 3P%, 2P%, FT%) etc.
