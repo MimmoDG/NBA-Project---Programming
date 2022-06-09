@@ -430,14 +430,10 @@ if sec == 'LeBron James exploration and analysis':
     He was drafted by Cavs then he went to Heat and after this experience he came back to Cavs and after four years he went to Lakers where he still is. 
     ''')
     stat = st.selectbox('Choose a Stat', LeB_C_PG_RS.columns.drop(['Season', 'Tm', 'Pos']).tolist(), key=3)
-    Cavs_1 = LeB_C_PG_RS[stat].head(7).mean() #medie ai cavs (prima esperienza)
-    Heat = LeB_C_PG_RS[stat].iloc[7:11].mean() #medie agli heat
-    Cavs_2 = LeB_C_PG_RS[stat].iloc[11:15].mean() #medie ai cavs (seconda esperienza)
-    Lakers = LeB_C_PG_RS[stat].tail(4).mean() #medie ai lakers
-    [Cavs_1, Heat, Cavs_2, Lakers]
-    #migliorare output
+    df = LeB_C_PG_RS.groupby(by='Tm').mean()
+    st.dataframe(df[stat])
 
-    st.subheader('Analys with Pos')
+    st.subheader('Analysis with Pos')
     st.write(''' In this subsection will be shown an analysis of the LeBron trends according to the different roles he played during his whole career.
     As for the analysis for the teams also in this case will be presented some plots and a comparison of his trends.
     ''')
@@ -458,16 +454,12 @@ if sec == 'LeBron James exploration and analysis':
     Now we will analyse the mean of his statistics accordingly to the role he played that season showing how he changed his trends also because of the role.
     ''')
     stat = st.selectbox('Choose a Stat', LeB_C_PG_RS.columns.drop(['Season', 'Tm', 'Pos']).tolist(), key=4)
-    elenco = []
-    for Pos in LeB_C_PG_RS['Pos']:  
-      a = LeB_C_PG_RS[stat].mean() #medie per i diversi ruoli
-      elenco.append(a)
-    elenco
-    #da mettere a posto il codice perchè è sbagliato l'output
+    df = LeB_C_PG_RS.groupby(by='Pos').mean()
+    st.dataframe(df[stat])
     
     #show plot misto con più di una stat
     st.write(''' After all this analysis will be provided some mixed plots containing more variables just to show the trend of these variables.
-    For example, the first plot contains the percentages of shooting, the second contains a comparison between assists and rebounds and the last one shows the comparison between steels and turnovers
+    For example, the first plot contains the percentages of shooting, the second contains a comparison between assists and rebounds and the last one shows the comparison between steels and turnovers.
     ''')
     Season = list(LeB_C_PG_RS['Season'])
     DPP = list(LeB_C_PG_RS['2P%'])
@@ -511,8 +503,6 @@ if sec == 'LeBron James exploration and analysis':
     plt.xticks(rotation=45)
     st.pyplot(fig)
 
-# controllare solo un selectbox da migliorare per l'analisi con i ruoli
-
 if sec == 'Predictive model for LeBron James':
     st.header('Predictive model for LeBron James')
 
@@ -521,6 +511,18 @@ if sec == 'Predictive model for LeBron James':
 
 if sec == 'Season 2020/2021 exploration and analysis':
     st.header('Season 2020/2021 exploration and analysis')
+
+    st.write(''' In this section will be exploited the analysis about the regular season 2020/21 splitted into two datasets, 'Per Game' and 'Advanced'.
+    Firstly will be presented a comparison between the different teams and the number of players that played for that team. 
+    As we can see the range of players for every team is from 16 to 28. But are included also the players who changed teams and didn't play many matches for that team.
+    ''')
+    st.dataframe(pd.DataFrame(Adv_Stats_1.groupby(by='Tm').count()['Player']).T)
+    st.write(''' Now will be presented a comparison between the roles.
+    As we can see the most spread role is the SG and the less spread is the SF. This is not very indicative because some players can play different role, but they are registered with the role they played the most during this season.
+    ''')
+    st.dataframe(pd.DataFrame(Adv_Stats_1.groupby(by='Pos').count()['Player']))
+    st.write(''' Now the analysis will be splitted into the two different dataset and for each of them will be conducted similar analysis.
+    ''')
 
     selection = st.radio('Choose a dataset', ('Per Game stats dataset', 'Advanced stats dataset'))
 
@@ -543,6 +545,46 @@ if sec == 'Season 2020/2021 exploration and analysis':
         ms = xG_Stats_1[x].mean()
         st.write('The mean for this statistic is: ', str(ms))
 
+      st.subheader('Variables Histograms')
+      fig = plt.figure(figsize=(14,12))
+      plt.subplot(431)
+      plt.title('PTS')
+      plt.hist(xG_Stats_1['PTS'], bins=20)
+      plt.subplot(432)
+      plt.title('AST')
+      plt.hist(xG_Stats_1['AST'], bins=20)
+      plt.subplot(433)
+      plt.title('TRB')
+      plt.hist(xG_Stats_1['TRB'], bins=20)
+      plt.subplot(434)
+      plt.title('FG%')
+      plt.hist(xG_Stats_1['FG%'], bins=20)
+      plt.subplot(435)
+      plt.title('3P%')
+      plt.hist(xG_Stats_1['3P%'], bins=20)
+      plt.subplot(436)
+      plt.title('2P%')
+      plt.hist(xG_Stats_1['2P%'], bins=20)
+      plt.subplot(437)
+      plt.title('FT%')
+      plt.hist(xG_Stats_1['FT%'], bins=20)
+      plt.subplot(438)
+      plt.title('BLK')
+      plt.hist(xG_Stats_1['BLK'], bins=20)
+      plt.subplot(439)
+      plt.title('G')
+      plt.hist(xG_Stats_1['G'], bins=20)
+      plt.subplot(4,3,10)
+      plt.title('MP')
+      plt.hist(xG_Stats_1['MP'], bins=20)
+      plt.subplot(4,3,11)
+      plt.title('STL')
+      plt.hist(xG_Stats_1['STL'], bins=20)
+      plt.subplot(4,3,12)
+      plt.title('TOV')
+      plt.hist(xG_Stats_1['TOV'], bins=20)
+      st.pyplot(fig)
+      
       #altre cose con per game dataset
 
     if selection == 'Advanced stats dataset':
@@ -564,12 +606,138 @@ if sec == 'Season 2020/2021 exploration and analysis':
         ms = Adv_Stats_1[x].mean()
         st.write('The mean for this statistic is: ', str(ms))
       
+      st.subheader('Variables Histograms')
+      fig = plt.figure(figsize=(14,12))
+      plt.subplot(441)
+      plt.title('MP')
+      plt.hist(Adv_Stats_1['MP'], bins=20)
+      plt.subplot(442)
+      plt.title('G')
+      plt.hist(Adv_Stats_1['G'], bins=20)
+      plt.subplot(443)
+      plt.title('Age')
+      plt.hist(Adv_Stats_1['Age'], bins=20)
+      plt.subplot(444)
+      plt.title('Pos')
+      plt.hist(Adv_Stats_1['Pos'], bins=20)
+      plt.subplot(445)
+      plt.title('BPM')
+      plt.hist(Adv_Stats_1['BPM'], bins=20)
+      plt.subplot(446)
+      plt.title('DBPM')
+      plt.hist(Adv_Stats_1['DBPM'], bins=20)
+      plt.subplot(447)
+      plt.title('OBPM')
+      plt.hist(Adv_Stats_1['OBPM'], bins=20)
+      plt.subplot(448)
+      plt.title('VORP')
+      plt.hist(Adv_Stats_1['VORP'], bins=20)
+      plt.subplot(449)
+      plt.title('WS')
+      plt.hist(Adv_Stats_1['WS'], bins=20)
+      plt.subplot(4,4,10)
+      plt.title('WS/48')
+      plt.hist(Adv_Stats_1['WS/48'], bins=20)
+      plt.subplot(4,4,11)
+      plt.title('OWS')
+      plt.hist(Adv_Stats_1['OWS'], bins=20)
+      plt.subplot(4,4,12)
+      plt.title('DWS')
+      plt.hist(Adv_Stats_1['DWS'], bins=20)
+      plt.subplot(4,4,13)
+      plt.title('USG%')
+      plt.hist(Adv_Stats_1['USG%'], bins=20)
+      plt.subplot(4,4,14)
+      plt.title('TS%')
+      plt.hist(Adv_Stats_1['TS%'], bins=20)
+      plt.subplot(4,4,15)
+      plt.title('3PAr')
+      plt.hist(Adv_Stats_1['3PAr'], bins=20)
+      plt.subplot(4,4,16)
+      plt.title('PER')
+      plt.hist(Adv_Stats_1['PER'], bins=20)
+      st.pyplot(fig)
+
+      st.subheader('Win Share Analysis')
+      st.write(''' As we could know, win share is an important variable that explains how crucial is a player for a team due to the effort he gives in the team victories.
+      For this reason here are shown some stats that focuses on this statistic for the season 2020/21.
+      ''')
+      win_share = Adv_Stats_1.sort_values(by='WS', ascending=False)[['Player', 'WS', 'WS/48', 'OWS', 'DWS']]
+      win_share = win_share.reset_index().drop(columns='index')
+      st.write(win_share)
+      st.write(''' We can see that the best player in this statistics is Nikola Jokic with 15.6, instead some players have also a negative win share and the worst for this statistic is Aleksej Pokusevski.
+      For this variable are also provided three similar statistics: those are the win share for 48 minutes, that is a win share standardised on the entire duration of a game;
+      the offensive and the difensive win share that summed up compose the win share statistic.
+      ''')
+      player_name = st.selectbox('Player name', Adv_Stats_1['Player'], key=0)
+      st.write('Ws statistics for ', player_name, ' are equal to:', win_share[win_share['Player'] == player_name])
+
+      st.vega_lite_chart(win_share, {'width': 500, 'height': 500, 'mark' : {'type':'circle', 'tooltip':True}, 'encoding' : {
+        'x': {'field': 'OWS', 'type': 'quantitative'},
+        'y': {'field': 'DWS', 'type': 'quantitative'},
+        'color': {'field': 'Player', 'type': 'nominal'}}})
+
+      win_share.set_index('Player', inplace=True)  
+      x = win_share[:25].index
+      y = win_share[:25]['WS']
+      fig = plt.figure(figsize=(10,6))
+      plt.title('Top 25 players by win share')
+      plt.bar(x, y)
+      plt.ylabel('Win Share')
+      plt.xticks(rotation=90)
+      st.pyplot(fig)
+
+      st.subheader('Box Plus/Minus Analysis')
+      st.write(''' Another important variable for the analysis of the players is the box plus/minus. 
+      This variable shows how many benefits or malus gives a player to his team while playing.
+      If this variable is high this means that when the player is in the field he provide his team a huge benefit, instead when this variable is lower or negative, the player is not so useful for his team.
+      For this reason here are shown some stats that focuses on this statistic for the season 2020/21.
+      ''')
+      most_BPM = Adv_Stats_1.sort_values(by='BPM', ascending=False)[['Player', 'BPM', 'OBPM', 'DBPM', 'VORP']]
+      most_BPM = most_BPM.reset_index().drop(columns='index')
+      st.write(most_BPM)
+      st.write(''' As we can see from the dataframe, there is a player, Udonis Haslem, that has provided his team, while playing, more than 30 points.
+      This incredible results leads him to be the best player on this statistic. For the other players, the results are more intuitive, becuase they have a range between 12 and -6 for most players. 
+      There are also many many players with a huge negative impact in their team and the worst is Anžejs Pasečņiks with -46.6.
+      ''')
+      player_name = st.selectbox('Player name', Adv_Stats_1['Player'], key=1)
+      st.write('Ws statistics for ', player_name, ' are equal to:', most_BPM[most_BPM['Player'] == player_name])
+
+      st.vega_lite_chart(most_BPM, {'width': 500, 'height': 500, 'mark' : {'type':'circle', 'tooltip':True}, 'encoding' : {
+        'x': {'field': 'OBPM', 'type': 'quantitative'},
+        'y': {'field': 'DBPM', 'type': 'quantitative'},
+        'color': {'field': 'Player', 'type': 'nominal'}}})
+      
+      most_BPM.set_index('Player', inplace=True)  
+      x = most_BPM[:25].index
+      y = most_BPM[:25]['BPM']
+      fig = plt.figure(figsize=(10,6))
+      plt.title('Top 25 players by box plus/minus')
+      plt.bar(x, y)
+      plt.ylabel('Box Plus/Minus')
+      plt.xticks(rotation=90)
+      st.pyplot(fig)
+
+      st.write(''' To reduce the effect of outliers, to calculate the BPM we add a mask that include the players that have played at least 30 games.
+      With this mask we can see that now the players in the chart are well-known and still they have good BPM value.
+      ''')
+      BPM_with_mask = Adv_Stats_1.sort_values(by='BPM', ascending=False)[['Player', 'BPM', 'OBPM', 'DBPM', 'VORP', 'G']]
+      BPM_with_mask.set_index('Player', inplace=True)
+      games_mask_30 = BPM_with_mask['G'] > 30
+      x = BPM_with_mask[games_mask_30][:25].index
+      y = BPM_with_mask[games_mask_30][:25]['BPM']
+      fig = plt.figure(figsize=(10,6))
+      plt.title('Top 25 players by box plus/minus with at least 30 games played')
+      plt.bar(x, y)
+      plt.ylabel('Box Plus/Minus')
+      plt.xticks(rotation=90)
+      st.pyplot(fig)
+
       #altre cose con advanced dataset
       
 # show other features, other stats analysed
 # plots su Teams and Pos + stats on the same columns
 # plot misti con più stats (FG%, 3P%, 2P%, FT%) etc.
-# plot distribuzioni (hist, di tutte le variabili)
 
 if sec == 'Predictive model for Season 2020/2021':
     st.header('Predictive model for Season 2020/2021')
