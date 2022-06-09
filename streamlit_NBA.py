@@ -1,10 +1,11 @@
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sb
 import streamlit as st
 import sklearn as sk
 from sklearn.model_selection import train_test_split
-from sklearn.tree import DecisionTreeClassifier
+from sklearn.tree import DecisionTreeRegressor
 import sklearn.metrics as skm
 import time
 import streamlit.components.v1 as components
@@ -20,8 +21,8 @@ from sklearn.cluster import KMeans
 import streamlit_option_menu as som
 from sklearn.metrics import mean_squared_error
 from sklearn.datasets import make_blobs
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.neighbors import KNeighborsClassifier
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.neighbors import KNeighborsRegressor
 #from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 
 
@@ -741,6 +742,76 @@ if sec == 'Season 2020/2021 exploration and analysis':
 
 if sec == 'Predictive model for Season 2020/2021':
     st.header('Predictive model for Season 2020/2021')
+    st.write('''
+    ''')
+
+    selection = st.radio('Choose a dataset', ('Per Game stats dataset', 'Advanced stats dataset'))
+    
+    if selection == 'Per Game stats dataset':
+
+      st.subheader('Per Game Dataset')
+
+      #regressione con random forest
+      xG_data = xG_Stats_1[['Player', 'PTS', 'AST', 'TRB', 'MP', 'BLK', 'STL', 'TOV', 'FGA', 'Age', 'Pos']]
+      xG_data.sort_values(by='Player')
+      xG_datum = pd.concat([xG_data, pd.get_dummies(xG_data['Pos'])], axis=1).drop(columns='Pos')
+      x = xG_datum.drop(columns=['Player', 'PTS'])
+      y = xG_datum['PTS']
+      x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=1)
+
+      fig = plt.figure(figsize=(12, 10))
+      plt.subplot(111)
+      sb.heatmap(xG_datum.corr(), annot=True)
+      st.pyplot(fig)
+
+      model = RandomForestRegressor().fit(x_train, y_train)
+      y_pred = model.predict(x_test)
+
+      #variables to be setted for the prediction
+      st.write('Number of assist per game:')
+      first = st.slider('Slide me', min_value= 0.0, max_value=20.0, key=0)
+      st.write('Number of total rebound per game:')
+      second = st.slider('Slide me', min_value= 0.0, max_value=20.0, key=1)
+      st.write('Number of minutes played per game:')
+      third = st.slider('Slide me', min_value= 0.0, max_value=42.0, key=2)
+      st.write('Number of blocks per game:')
+      fourth = st.slider('Slide me', min_value= 0.0, max_value=8.0, key=3)
+      st.write('Number of steels per game:')
+      fifth = st.slider('Slide me', min_value= 0.0, max_value=8.0, key=4)
+      st.write('Number of turnovers per game:')
+      sixth = st.slider('Slide me', min_value= 0.0, max_value=8.0, key=5)
+      st.write('Number of field goal attempted per game:')
+      seventh = st.slider('Slide me', min_value= 0.0, max_value=30.0, key=6)
+      st.write('Age:')
+      eighth = st.slider('Slide me', min_value= 17, max_value=46, step=1, key=7)
+      st.write('Role played:')
+      dummy = st.select_slider('Slide me', ['C', 'PG', 'PF', 'SG', 'SF'], key=8)
+      ninth = 0
+      tenth = 0
+      eleventh = 0
+      twelth = 0
+      thirteenth = 0
+      if dummy == 'C':
+        ninth = 1
+      if dummy == 'PG':
+        tenth = 1
+      if dummy == 'PF':
+        eleventh = 1
+      if dummy == 'SG':
+        twelth = 1
+      if dummy == 'SF':
+        thirteenth = 1
+          
+      if st.button('Calculate'):
+        pts = model.predict(X=[[first, second, third, fourth, fifth, sixth, seventh, eighth, ninth, tenth, eleventh, twelth, thirteenth]])
+        st.write('The predicted number of points with these inputs is: ', str(list(pts)))
+
+
+    if selection == 'Advanced stats dataset':
+
+      st.subheader('Advanced Dataset')
+
+      
 
 # mettere i modelli che ci sono sull'ipynb generici con la possibilità di scegliere la statistica da predire con anche la possibilità di mettere dei valori in input ecc
 # vedere che modelli mettere, capire che altre analisi vanno fatte e se sono abbastanza
