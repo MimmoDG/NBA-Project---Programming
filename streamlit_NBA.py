@@ -290,70 +290,13 @@ if sec == 'Data cleaning':
 if sec == 'LeBron James exploration and analysis':
     st.header('LeBron James exploration and analysis')
 
-    selection = st.radio('Choose a dataset', ('Per Game Stats', 'Totals Stats'))
-
-    if selection == 'Per Game Stats':
-      x = st.selectbox('Choose a Stat', LeB_C_PG_RS.columns.drop(['Season', 'Tm', 'Pos']).tolist(), key=0)
-
-      y = st.selectbox('Choose a feature', ['Max', 'Min', 'Mean'], key=1)
-
-      if y == 'Max':
-        ms = LeB_C_PG_RS[x].max()
-        num = int(LeB_C_PG_RS[LeB_C_PG_RS[x]==ms].index.to_list()[0])
-        a = LeB_C_PG_RS.loc[num,'Season']
-        st.write('The max has been registered in the: ', a, ' season. The max for this stat is: ', str(ms)) 
-      if y == 'Min':
-        ms = LeB_C_PG_RS[x].min()
-        num = int(LeB_C_PG_RS[LeB_C_PG_RS[x]==ms].index.to_list()[0])
-        a = LeB_C_PG_RS.loc[num, 'Season']
-        st.write('The min has been registered in the: ', a, ' season. The min for this stat is: ', str(ms)) 
-      if y == 'Mean':
-        ms = LeB_C_PG_RS[x].mean()
-        st.write('The mean for this stat is: ', str(ms))
-      
-      Season = list(LeB_C_PG_RS['Season'])
-      Peppino = list(LeB_C_PG_RS[x])
-      fig = plt.figure(figsize=(10, 6))
-      plt.plot(Season, Peppino, '-o')
-      plt.title('LeBron ' + x + ' averages in every season')
-      plt.xlabel('Seasons')
-      plt.ylabel(x)
-      plt.xticks(rotation=45)
-      st.pyplot(fig)
-
-    
-    if selection == 'Totals Stats':
-      x = st.selectbox('Choose a Stat', LeB_C_Tot_RS.columns.drop(['Season', 'Tm', 'Pos']).tolist(), key=0)
-
-      y = st.selectbox('Choose a feature', ['Max', 'Min', 'Mean'], key=1)
-
-      if y == 'Max':
-        ms = LeB_C_Tot_RS[x].max()
-        num = int(LeB_C_Tot_RS[LeB_C_Tot_RS[x]==ms].index.to_list()[0])
-        a = LeB_C_Tot_RS.loc[num,'Season']
-        st.write('The max has been registered in the: ', a, ' season. The max for this stat is: ', str(ms)) 
-      if y == 'Min':
-        ms = LeB_C_Tot_RS[x].min()
-        num = int(LeB_C_Tot_RS[LeB_C_Tot_RS[x]==ms].index.to_list()[0])
-        a = LeB_C_Tot_RS.loc[num, 'Season']
-        st.write('The min has been registered in the: ', a, ' season. The min for this stat is: ', str(ms)) 
-      if y == 'Mean':
-        ms = LeB_C_Tot_RS[x].mean()
-        st.write('The mean for this stat is: ', str(ms))
-      
-      Season = list(LeB_C_Tot_RS['Season'])
-      Peppino = list(LeB_C_Tot_RS[x])
-      fig = plt.figure(figsize=(10, 6))
-      plt.plot(Season, Peppino, '-o')
-      plt.title('LeBron ' + x + ' averages in every season')
-      plt.xlabel('Seasons')
-      plt.ylabel(x)
-      plt.xticks(rotation=45)
-      st.pyplot(fig)
+    st.write(''' In this section will be exploited the LeBron James exploration and analysis about the 'Per Game' and 'Totals' statistics.
+    With this analysis we want to show Lebron's trends from many points of view.
+    ''')
 
     st.subheader('Variables Histograms') 
     st.write('''
-    After showing these statistics now will be presented some histograms of the main variables used for the analysis.
+    In this subsection will be presented some histograms of the main variables used for the analysis.
     For the histograms are used the 'Per Game' statistics and the main variables included are: PTS, AST, TRB, FG, 3P, STL, TOV and BLK. 
     ''')
     fig = plt.figure(figsize=(14,12))
@@ -504,6 +447,68 @@ if sec == 'LeBron James exploration and analysis':
     plt.xticks(rotation=45)
     st.pyplot(fig)
 
+    selection = st.radio('Choose a dataset', ('Per Game Stats', 'Totals Stats'))
+
+    if selection == 'Per Game Stats':
+      x = st.selectbox('Choose a Stat', LeB_C_PG_RS.columns.drop(['Season', 'Tm', 'Pos']).tolist(), key=0)
+
+      y = st.selectbox('Choose a feature', ['Max', 'Min', 'Mean'], key=1)
+
+      if y == 'Max':
+        ms = LeB_C_PG_RS[x].max()
+        num = int(LeB_C_PG_RS[LeB_C_PG_RS[x]==ms].index.to_list()[0])
+        a = LeB_C_PG_RS.loc[num,'Season']
+        st.write('The max has been registered in the: ', a, ' season. The max for this stat is: ', str(ms)) 
+      if y == 'Min':
+        ms = LeB_C_PG_RS[x].min()
+        num = int(LeB_C_PG_RS[LeB_C_PG_RS[x]==ms].index.to_list()[0])
+        a = LeB_C_PG_RS.loc[num, 'Season']
+        st.write('The min has been registered in the: ', a, ' season. The min for this stat is: ', str(ms)) 
+      if y == 'Mean':
+        ms = LeB_C_PG_RS[x].mean()
+        st.write('The mean for this stat is: ', str(ms))
+      
+      Season = list(LeB_C_PG_RS['Season'])
+      Peppino = list(LeB_C_PG_RS[x])
+      fig = plt.figure(figsize=(10, 6))
+      plt.plot(Season, Peppino, '-o')
+      plt.title('LeBron ' + x + ' averages in every season')
+      plt.xlabel('Seasons')
+      plt.ylabel(x)
+      plt.xticks(rotation=45)
+      st.pyplot(fig)
+
+    
+    if selection == 'Totals Stats':
+      x = st.selectbox('Choose a Stat', LeB_C_Tot_RS.columns.drop(['Season', 'Tm', 'Pos']).tolist(), key=0)
+
+      y = st.selectbox('Choose a feature', ['Max', 'Min', 'Mean'], key=1)
+
+      if y == 'Max':
+        ms = LeB_C_Tot_RS[x].max()
+        num = int(LeB_C_Tot_RS[LeB_C_Tot_RS[x]==ms].index.to_list()[0])
+        a = LeB_C_Tot_RS.loc[num,'Season']
+        st.write('The max has been registered in the: ', a, ' season. The max for this stat is: ', str(ms)) 
+      if y == 'Min':
+        ms = LeB_C_Tot_RS[x].min()
+        num = int(LeB_C_Tot_RS[LeB_C_Tot_RS[x]==ms].index.to_list()[0])
+        a = LeB_C_Tot_RS.loc[num, 'Season']
+        st.write('The min has been registered in the: ', a, ' season. The min for this stat is: ', str(ms)) 
+      if y == 'Mean':
+        ms = LeB_C_Tot_RS[x].mean()
+        st.write('The mean for this stat is: ', str(ms))
+      
+      Season = list(LeB_C_Tot_RS['Season'])
+      Peppino = list(LeB_C_Tot_RS[x])
+      fig = plt.figure(figsize=(10, 6))
+      plt.plot(Season, Peppino, '-o')
+      plt.title('LeBron ' + x + ' averages in every season')
+      plt.xlabel('Seasons')
+      plt.ylabel(x)
+      plt.xticks(rotation=45)
+      st.pyplot(fig)
+
+
 if sec == 'Predictive model for LeBron James':
     st.header('Predictive model for LeBron James')
 
@@ -585,6 +590,12 @@ if sec == 'Season 2020/2021 exploration and analysis':
       plt.title('TOV')
       plt.hist(xG_Stats_1['TOV'], bins=20)
       st.pyplot(fig)
+      
+      team_player_groupby = xG_Stats_1.groupby(['Tm', 'Player'])
+      #groupby_Team = team_player_groupby[['PTS', 'AST', 'TRB', 'BLK']].mean()
+      team_df = pd.DataFrame(team_player_groupby[['PTS', 'AST', 'TRB', 'BLK']].mean())
+      Team_chosen = st.selectbox('Choose a Team', np.unique(xG_Stats_1['Tm']), key=1)
+      team_df.loc[(Team_chosen),:]
       
       #altre cose con per game dataset
 
@@ -805,6 +816,11 @@ if sec == 'Predictive model for Season 2020/2021':
       if st.button('Calculate'):
         pts = model.predict(X=[[first, second, third, fourth, fifth, sixth, seventh, eighth, ninth, tenth, eleventh, twelth, thirteenth]])
         st.write('The predicted number of points with these inputs is: ', str(list(pts)))
+
+      st.write('''With this model we can predict the expected number of points realized by a player according to setted values for the statistics.
+      This model is quite well performed according to the R^2 score it has: ''', str(model.score(x_test, y_test)) , '''. To realize this regression, Random Forest Regressor has been used and the dataset has been splitted using the comand train_test_split.
+      ''')
+
 
 
     if selection == 'Advanced stats dataset':
