@@ -282,10 +282,8 @@ if sec == 'Data cleaning':
           With this description is easier to analize the data for the analysis.
           ''')
           st.dataframe(Adv_Stats_1.describe()) 
-
-# forse mettere le heatmap con qualche spiegazione oppure nelle sezioni giuste          
+        
 # mettere nelle singole sezioni le sotto tabelline fatte ma non nella parte di data cleaning dato che non sono salvataggi
-# controllare se il describe con i vari dataset è giusto per far vedere le variabili 
 
 if sec == 'LeBron James exploration and analysis':
     st.header('LeBron James exploration and analysis')
@@ -592,10 +590,85 @@ if sec == 'Season 2020/2021 exploration and analysis':
       st.pyplot(fig)
       
       team_player_groupby = xG_Stats_1.groupby(['Tm', 'Player'])
-      #groupby_Team = team_player_groupby[['PTS', 'AST', 'TRB', 'BLK']].mean()
-      team_df = pd.DataFrame(team_player_groupby[['PTS', 'AST', 'TRB', 'BLK']].mean())
+      team_df = pd.DataFrame(team_player_groupby[['PTS', 'AST', 'TRB', 'BLK', 'G', 'MP']].mean())
       Team_chosen = st.selectbox('Choose a Team', np.unique(xG_Stats_1['Tm']), key=1)
       team_df.loc[(Team_chosen),:]
+
+      st.subheader('Accuracy Analysis')
+      st.write(''' In this subsection we will show the field goal percentage calculated and not taken by the stats.
+      We also added a mask on the number of shots tried per game, in order to take only the player who usually play many minuts in a game.
+      ''')
+
+      most_FGA = xG_Stats_1.sort_values(by='FGA', ascending=False)[['Player', 'FG', 'FGA', '3P', '3PA', '2P', '2PA', 'FT', 'FTA']]
+      most_FGA.set_index('Player', inplace=True)
+      #Var1_chosen = st.selectbox('Choose a Percentile', most_FGA[['FG', '3P', '2P', 'FT']], key=2)
+      #Var2_chosen = st.selectbox('Choose a Percentile', most_FGA[['FGA', '3PA', '2PA', 'FTA']], key=3)
+      #most_FGA['ACCURACY'] = most_FGA[Var1_chosen] / most_FGA[Var2_chosen]
+      most_FGA['ACCURACY'] = most_FGA['FG'] / most_FGA['FGA']
+      most_accurate_mask = most_FGA['ACCURACY'] == most_FGA['ACCURACY'].max()
+      n = st.slider('Choose a number of shots', min_value=0, max_value=23)
+      at_least_n_shots_xG = most_FGA['FGA'] >= n
+      st.write(''' Here we present the players with the highest accuracy without considering the mask on the number of shots.
+      ''')
+      most_FGA[most_accurate_mask]
+      st.write(''' While here we show the players who overpass the mask in this season with their statistics.
+      ''')
+      most_FGA[at_least_n_shots_xG]
+      st.write('''Finally, we show the player with the highest accuracy considering also the mask on the number of shots.
+      ''')
+      most_FGA[most_FGA['ACCURACY'] == most_FGA[at_least_n_shots_xG]['ACCURACY'].max()]
+      st.write(''' In conclusion, we can see that this new variable is the same as 'FG%' with the difference that 'FG%' don't come from approximation on the number of successful shots and tried, but from the exact ratio of the two.
+      So we can say that 'ACCURACY' is less precise than 'FG%'.
+      ''')
+      
+      st.subheader('Main Variables Analysis')
+      #fare i write
+      st.write(''' In this subsection will be shown the some features of the main variables, like PTS, AST and TRB.
+      For this three variables will be plotted bar charts in order to show the top 25 in each statistic.
+      ''')
+      most_points = xG_Stats_1.sort_values(by='PTS', ascending=False)[['Player', 'PTS', 'AST', 'TRB', 'BLK', 'STL']]
+      most_points.reset_index().drop(columns='index')
+      st.write(most_points)
+      player_name = st.selectbox('Player name', xG_Stats_1['Player'], key=0)
+      st.write('Main statistics for ', player_name, ' are equal to:', most_points[most_points['Player'] == player_name])
+
+      st.vega_lite_chart(most_points, {'width': 500, 'height': 500, 'mark' : {'type':'circle', 'tooltip':True}, 'encoding' : {
+        'x': {'field': 'AST', 'type': 'quantitative'},
+        'y': {'field': 'TRB', 'type': 'quantitative'},
+        'size': {'field': 'PTS', 'type': 'quantitative'},
+        'color': {'field': 'Player', 'type': 'nominal'}}})
+
+      most_points.set_index('Player', inplace=True)  
+      x = most_points[:25].index
+      y = most_points[:25]['PTS']
+      fig = plt.figure(figsize=(10,6))
+      plt.title('Top 25 players by points')
+      plt.bar(x, y)
+      plt.ylabel('Points')
+      plt.xticks(rotation=90)
+      st.pyplot(fig)
+
+      most_assists = xG_Stats_1.sort_values(by='AST', ascending=False)[['Player', 'PTS', 'AST', 'TRB', 'BLK', 'STL']]
+      most_assists.set_index('Player', inplace=True)  
+      x = most_assists[:25].index
+      y = most_assists[:25]['AST']
+      fig = plt.figure(figsize=(10,6))
+      plt.title('Top 25 players by assists')
+      plt.bar(x, y)
+      plt.ylabel('Assists')
+      plt.xticks(rotation=90)
+      st.pyplot(fig)
+
+      most_rebounds = xG_Stats_1.sort_values(by='TRB', ascending=False)[['Player', 'PTS', 'AST', 'TRB', 'BLK', 'STL']]
+      most_rebounds.set_index('Player', inplace=True)  
+      x = most_rebounds[:25].index
+      y = most_rebounds[:25]['TRB']
+      fig = plt.figure(figsize=(10,6))
+      plt.title('Top 25 players by rebounds')
+      plt.bar(x, y)
+      plt.ylabel('Total Rebounds')
+      plt.xticks(rotation=90)
+      st.pyplot(fig)
       
       #altre cose con per game dataset
 
@@ -669,6 +742,11 @@ if sec == 'Season 2020/2021 exploration and analysis':
       plt.title('PER')
       plt.hist(Adv_Stats_1['PER'], bins=20)
       st.pyplot(fig)
+
+      team_player_groupby = Adv_Stats_1.groupby(['Tm', 'Player'])
+      team_df = pd.DataFrame(team_player_groupby[['TS%', '3PAr', 'AST%', 'TRB%', 'VORP', 'USG%', 'G', 'MP']].mean())
+      Team_chosen = st.selectbox('Choose a Team', np.unique(Adv_Stats_1['Tm']), key=1)
+      team_df.loc[(Team_chosen),:]
 
       st.subheader('Win Share Analysis')
       st.write(''' As we could know, win share is an important variable that explains how crucial is a player for a team due to the effort he gives in the team victories.
@@ -746,10 +824,6 @@ if sec == 'Season 2020/2021 exploration and analysis':
       st.pyplot(fig)
 
       #altre cose con advanced dataset
-      
-# show other features, other stats analysed
-# plots su Teams and Pos + stats on the same columns
-# plot misti con più stats (FG%, 3P%, 2P%, FT%) etc.
 
 if sec == 'Predictive model for Season 2020/2021':
     st.header('Predictive model for Season 2020/2021')
