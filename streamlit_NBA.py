@@ -13,17 +13,14 @@ from sklearn import linear_model
 from sklearn.linear_model import LinearRegression
 from sklearn.linear_model import Lasso
 from sklearn.linear_model import Ridge
-from sklearn.linear_model import LogisticRegression
 from sklearn.linear_model import LassoCV
 from sklearn.linear_model import RidgeCV
 from sklearn import cluster
 from sklearn.cluster import KMeans
 import streamlit_option_menu as som
 from sklearn.metrics import mean_squared_error
-from sklearn.datasets import make_blobs
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.neighbors import KNeighborsRegressor
-#from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 
 
 #import the initials datasets
@@ -827,7 +824,8 @@ if sec == 'Season 2020/2021 exploration and analysis':
 
 if sec == 'Predictive model for Season 2020/2021':
     st.header('Predictive model for Season 2020/2021')
-    st.write('''
+    st.write('''In this section will be exploited the predictive part of the project concerning the season 2020/21.
+    Here will be made different regressions according to the two datasets used.
     ''')
 
     selection = st.radio('Choose a dataset', ('Per Game stats dataset', 'Advanced stats dataset'))
@@ -835,8 +833,10 @@ if sec == 'Predictive model for Season 2020/2021':
     if selection == 'Per Game stats dataset':
 
       st.subheader('Per Game Dataset')
+      st.write(''' In this subsection will be provided a regression to predict the PTS realized by a player setting determinated values on the variable.
+      ''')
 
-      #regressione con random forest
+      #regressione con vari metodi
       xG_data = xG_Stats_1[['Player', 'PTS', 'AST', 'TRB', 'MP', 'BLK', 'STL', 'TOV', 'FGA', 'Age', 'Pos']]
       xG_data.sort_values(by='Player')
       xG_datum = pd.concat([xG_data, pd.get_dummies(xG_data['Pos'])], axis=1).drop(columns='Pos')
@@ -849,7 +849,8 @@ if sec == 'Predictive model for Season 2020/2021':
       sb.heatmap(xG_datum.corr(), annot=True)
       st.pyplot(fig)
 
-      model = RandomForestRegressor().fit(x_train, y_train)
+      model_1 = st.selectbox('Choose a Regression', [RandomForestRegressor, LinearRegression, Lasso, Ridge])
+      model = model_1().fit(x_train, y_train)
       y_pred = model.predict(x_test)
 
       #variables to be setted for the prediction
@@ -895,12 +896,202 @@ if sec == 'Predictive model for Season 2020/2021':
       This model is quite well performed according to the R^2 score it has: ''', str(model.score(x_test, y_test)) , '''. To realize this regression, Random Forest Regressor has been used and the dataset has been splitted using the comand train_test_split.
       ''')
 
+      # mettere dei plot per far vedere la distribuzione ecc della regressione
+
 
 
     if selection == 'Advanced stats dataset':
 
       st.subheader('Advanced Dataset')
+      st.write(''' In this subsection will be provided three different regression: the first to predict the VORP, the second to predict the BPM, and the last one to predict the WS.
+      ''')
 
+      sel = st.radio('Choose a Regression', ('VORP', 'BPM', 'WS'))
+
+      if sel == 'VORP':
+        st.subheader('VORP Regression')
+
+        Adv_data = Adv_Stats_1[['Player', 'VORP', 'BPM', 'WS', 'TS%', 'TRB%', 'AST%', 'PER', 'USG%', 'Age', 'Pos']]
+        Adv_data.sort_values(by='Player')
+        Adv_datum = pd.concat([Adv_data, pd.get_dummies(Adv_data['Pos'])], axis=1).drop(columns='Pos')
+        x = Adv_datum.drop(columns=['Player', 'VORP'])
+        y = Adv_datum['VORP']
+        x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=1)
+
+        fig = plt.figure(figsize=(12, 10))
+        plt.subplot(111)
+        sb.heatmap(Adv_datum.corr(), annot=True)
+        st.pyplot(fig)
+
+        model_1 = st.selectbox('Choose a Regression', [RandomForestRegressor, LinearRegression, Lasso, Ridge], key=0)
+        model = model_1().fit(x_train, y_train)
+        y_pred = model.predict(x_test)
+
+        #variables to be setted for the prediction
+        st.write('Value of BPM:')
+        first = st.slider('Slide me', min_value= -25.0, max_value=25.0, key=0)
+        st.write('Value of WS:')
+        second = st.slider('Slide me', min_value= -10.0, max_value=20.0, key=1)
+        st.write('True Shooting Percentage:')
+        third = st.slider('Slide me', min_value= 0.0, max_value=1.0, key=2)
+        st.write('Toal Rebound Percentage:')
+        fourth = st.slider('Slide me', min_value= 0.0, max_value=30.0, key=3)
+        st.write('Assist Percentage:')
+        fifth = st.slider('Slide me', min_value= 0.0, max_value=50.0, key=4)
+        st.write('Player Efficiency Rating:')
+        sixth = st.slider('Slide me', min_value= 5.0, max_value=35.0, key=5)
+        st.write('Usage Percentage:')
+        seventh = st.slider('Slide me', min_value= 5.0, max_value=40.0, key=6)
+        st.write('Age:')
+        eighth = st.slider('Slide me', min_value= 17, max_value=46, step=1, key=7)
+        st.write('Role played:')
+        dummy = st.select_slider('Slide me', ['C', 'PG', 'PF', 'SG', 'SF'], key=8)
+        ninth = 0
+        tenth = 0
+        eleventh = 0
+        twelth = 0
+        thirteenth = 0
+        if dummy == 'C':
+          ninth = 1
+        if dummy == 'PG':
+          tenth = 1
+        if dummy == 'PF':
+          eleventh = 1
+        if dummy == 'SG':
+          twelth = 1
+        if dummy == 'SF':
+          thirteenth = 1
+            
+        if st.button('Calculate'):
+          vorp = model.predict(X=[[first, second, third, fourth, fifth, sixth, seventh, eighth, ninth, tenth, eleventh, twelth, thirteenth]])
+          st.write('The predicted value over replacement player with these inputs is: ', str(list(vorp)))
+
+        st.write('''With this model we can predict the expected value over replacement player, that is A box score estimate of the points per 100 TEAM possessions that a player contributed above a replacement-level (-2.0) player, translated to an average team and prorated to an 82-game season.
+        Value over Replacement Player (VORP) converts the BPM rate into an estimate of each player's overall contribution to the team, measured vs. what a theoretical "replacement player" would provide, where the "replacement player" is defined as a player on minimum salary or not a normal member of a team's rotation.
+        This model is quite well performed according to the R^2 score it has: ''', str(model.score(x_test, y_test)) , '''. To realize this regression, the dataset has been splitted using the comand train_test_split.
+        ''')
+
+      if sel == 'BPM':
+        st.subheader('BPM Regression')
+
+        data = Adv_Stats_1[['Player', 'BPM', 'G', 'VORP', 'WS', 'WS/48', 'PER', 'USG%', 'TS%', 'Pos']]
+        data.sort_values(by='Player')
+        data1 = pd.concat([data, pd.get_dummies(data['Pos'])], axis=1).drop(columns='Pos')
+        x = data1.drop(columns=['Player', 'BPM'])
+        y = data1['BPM']
+        x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=1)
+
+        fig = plt.figure(figsize=(12, 10))
+        plt.subplot(111)
+        sb.heatmap(data.corr(), annot=True)
+        st.pyplot(fig)
+
+        model_1 = st.selectbox('Choose a Regression', [RandomForestRegressor, LinearRegression, Lasso, Ridge], key=1)
+        model = model_1().fit(x_train, y_train)
+        y_pred = model.predict(x_test)
+
+        #variables to be setted for the prediction
+        st.write('Number of Games played:')
+        first = st.slider('Slide me', min_value= 0, max_value=72, key=0)
+        st.write('Value of VORP:')
+        second = st.slider('Slide me', min_value= -5.0, max_value=10.0, key=1)
+        st.write('Value of WS:')
+        third = st.slider('Slide me', min_value= -10.0, max_value=20.0, key=2)
+        st.write('Value of WS/48:')
+        fourth = st.slider('Slide me', min_value= -0.5, max_value=1.0, key=3)
+        st.write('Player Efficiency Rating:')
+        fifth = st.slider('Slide me', min_value= 5.0, max_value=35.0, key=4)
+        st.write('Usage Percentage:')
+        sixth = st.slider('Slide me', min_value= 5.0, max_value=40.0, key=5)
+        st.write('True Shooting Percentage:')
+        seventh = st.slider('Slide me', min_value= 0.0, max_value=1.0, key=6)
+        st.write('Role played:')
+        dummy = st.select_slider('Slide me', ['C', 'PG', 'PF', 'SG', 'SF'], key=7)
+        eighth = 0
+        ninth = 0
+        tenth = 0
+        eleventh = 0
+        twelth = 0
+        if dummy == 'C':
+          eighth = 1
+        if dummy == 'PG':
+          ninth = 1
+        if dummy == 'PF':
+          tenth = 1
+        if dummy == 'SG':
+          eleventh = 1
+        if dummy == 'SF':
+          twelth = 1
+            
+        if st.button('Calculate'):
+          bpm = model.predict(X=[[first, second, third, fourth, fifth, sixth, seventh, eighth, ninth, tenth, eleventh, twelth]])
+          st.write('The predicted value over replacement player with these inputs is: ', str(list(bpm)))
+
+        st.write('''With this model we can predict the expected number of BPM, that is A box score estimate of the points provided by a player while playing.
+        This model is quite well performed according to the R^2 score it has: ''', str(model.score(x_test, y_test)) , '''. To realize this regression, the dataset has been splitted using the comand train_test_split.
+        ''')
+
+      if sel == 'WS':
+        st.subheader('WS Regression')
+
+        data = Adv_Stats_1[['Player', 'WS', 'G', 'VORP', 'BPM', 'WS/48', 'PER', 'USG%', 'TS%', 'Pos']]
+        data.sort_values(by='Player')
+        data1 = pd.concat([data, pd.get_dummies(data['Pos'])], axis=1).drop(columns='Pos')
+        x = data1.drop(columns=['Player', 'WS'])
+        y = data1['WS']
+        x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=1)
+
+        fig = plt.figure(figsize=(12, 10))
+        plt.subplot(111)
+        sb.heatmap(data.corr(), annot=True)
+        st.pyplot(fig)
+
+        model_1 = st.selectbox('Choose a Regression', [RandomForestRegressor, LinearRegression, Lasso, Ridge], key=2)
+        model = model_1().fit(x_train, y_train)
+        y_pred = model.predict(x_test)
+
+        #variables to be setted for the prediction
+        st.write('Number of Games played:')
+        first = st.slider('Slide me', min_value= 0, max_value=72, key=0)
+        st.write('Value of VORP:')
+        second = st.slider('Slide me', min_value= -5.0, max_value=10.0, key=1)
+        st.write('Value of BPM:')
+        third = st.slider('Slide me', min_value= -25.0, max_value=25.0, key=2)
+        st.write('Value of WS/48:')
+        fourth = st.slider('Slide me', min_value= -0.5, max_value=1.0, key=3)
+        st.write('Player Efficiency Rating:')
+        fifth = st.slider('Slide me', min_value= 5.0, max_value=35.0, key=4)
+        st.write('Usage Percentage:')
+        sixth = st.slider('Slide me', min_value= 5.0, max_value=40.0, key=5)
+        st.write('True Shooting Percentage:')
+        seventh = st.slider('Slide me', min_value= 0.0, max_value=1.0, key=6)
+        st.write('Role played:')
+        dummy = st.select_slider('Slide me', ['C', 'PG', 'PF', 'SG', 'SF'], key=7)
+        eighth = 0
+        ninth = 0
+        tenth = 0
+        eleventh = 0
+        twelth = 0
+        if dummy == 'C':
+          eighth = 1
+        if dummy == 'PG':
+          ninth = 1
+        if dummy == 'PF':
+          tenth = 1
+        if dummy == 'SG':
+          eleventh = 1
+        if dummy == 'SF':
+          twelth = 1
+            
+        if st.button('Calculate'):
+          ws = model.predict(X=[[first, second, third, fourth, fifth, sixth, seventh, eighth, ninth, tenth, eleventh, twelth]])
+          st.write('The predicted value over replacement player with these inputs is: ', str(list(ws)))
+
+        st.write('''With this model we can predict the expected number of WS, that is an estimate of the number of wins contributed by a player..
+        This model is quite well performed according to the R^2 score it has: ''', str(model.score(x_test, y_test)) , '''. To realize this regression, the dataset has been splitted using the comand train_test_split.
+        ''')
+
+      # si potrebbero aggiungere dei grafici
       
 
 # mettere i modelli che ci sono sull'ipynb generici con la possibilità di scegliere la statistica da predire con anche la possibilità di mettere dei valori in input ecc
