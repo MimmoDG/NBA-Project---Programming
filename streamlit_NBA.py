@@ -1,3 +1,4 @@
+from sre_constants import SRE_FLAG_DEBUG
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -7,8 +8,6 @@ import sklearn as sk
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeRegressor
 import sklearn.metrics as skm
-import time
-import streamlit.components.v1 as components
 from sklearn import linear_model
 from sklearn.linear_model import LinearRegression
 from sklearn.linear_model import Lasso
@@ -20,7 +19,6 @@ from sklearn.cluster import KMeans
 import streamlit_option_menu as som
 from sklearn.metrics import mean_squared_error
 from sklearn.ensemble import RandomForestRegressor
-from sklearn.neighbors import KNeighborsRegressor
 
 
 #import the initials datasets
@@ -507,8 +505,51 @@ if sec == 'LeBron James exploration and analysis':
 if sec == 'Predictive model for LeBron James':
     st.header('Predictive model for LeBron James')
 
+    LeB_data = LeB_C_PG_RS[['Age', 'G', 'MP', 'FG%', '3P%', '2P%', 'FT%', 'PTS']]
+    x = LeB_data.drop(columns=['Age', 'PTS'])
+    y = LeB_data['PTS']
+    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=1)
+
+    fig = plt.figure(figsize=(12, 10))
+    plt.subplot(111)
+    sb.heatmap(LeB_data.corr(), annot=True)
+    st.pyplot(fig)
+
+    model = LinearRegression().fit(x_train, y_train)
+    y_pred = model.predict(x_test)
+
+    #variables to be setted for the prediction
+    st.write('Number of games played:')
+    games = st.slider('Slide me', min_value= 0, max_value=82, key=0)
+    st.write('Number of minutes played per game:')
+    mp = st.slider('Slide me', min_value= 0.0, max_value=42.0, key=1)
+    st.write('Field Goal Percentage:')
+    fgp = st.slider('Slide me', min_value= 0.0, max_value=1.0, key=2)
+    st.write('3 Point Percentage:')
+    tpp = st.slider('Slide me', min_value= 0.0, max_value=1.0, key=3)
+    st.write('2 Point Percentage:')
+    dpp = st.slider('Slide me', min_value= 0.0, max_value=1.0, key=4)
+    st.write('Free Throw Percentage:')
+    ftp = st.slider('Slide me', min_value= 0.0, max_value=1.0, key=5)
+    if st.button('Predict:'):
+      pts = model.predict(X=[[games, mp, fgp, tpp, dpp, ftp]])
+      age_lin_reg = ['38.0']
+      fig = plt.figure()
+      plt.scatter(LeB_data['Age'], y)
+      plt.scatter(age_lin_reg, pts, c='red')
+      plt.plot(LeB_data['Age'],y)
+      plt.plot(['37.0','38.0'], [LeB_data['PTS'][18], pts], c='red')
+      plt.xlabel("Age")
+      plt.ylabel("PTS")
+      plt.title('PTS trend')
+      st.write(fig)
+      st.write('The predicted number of points with these inputs, for LeBron James, is: ', str(list(pts)))
+      # sistema scatter plot
+
+# sistemare lo scatter
+# guarda scatter plot F
 # mettere i modelli che ci sono sull'ipynb generici con la possibilità di scegliere la statistica da predire con anche la possibilità di mettere dei valori in input ecc
-# vedere che modelli mettere, capire che altre analisi vanno fatte e se sono abbastanza
+# aggiungere altre due regressioni/previsioni, poi è finita questa parte
 
 if sec == 'Season 2020/2021 exploration and analysis':
     st.header('Season 2020/2021 exploration and analysis')
@@ -896,7 +937,10 @@ if sec == 'Predictive model for Season 2020/2021':
       This model is quite well performed according to the R^2 score it has: ''', str(model.score(x_test, y_test)) , '''. To realize this regression, Random Forest Regressor has been used and the dataset has been splitted using the comand train_test_split.
       ''')
 
+      
+      #st.line_chart(xG_data[['PTS', 'AST', 'TRB']])
       # mettere dei plot per far vedere la distribuzione ecc della regressione
+      # inserire degli scatter plot
 
 
 
@@ -969,6 +1013,7 @@ if sec == 'Predictive model for Season 2020/2021':
         st.write('''With this model we can predict the expected value over replacement player, that is A box score estimate of the points per 100 TEAM possessions that a player contributed above a replacement-level (-2.0) player, translated to an average team and prorated to an 82-game season.
         Value over Replacement Player (VORP) converts the BPM rate into an estimate of each player's overall contribution to the team, measured vs. what a theoretical "replacement player" would provide, where the "replacement player" is defined as a player on minimum salary or not a normal member of a team's rotation.
         This model is quite well performed according to the R^2 score it has: ''', str(model.score(x_test, y_test)) , '''. To realize this regression, the dataset has been splitted using the comand train_test_split.
+        Other results from the model are: the mean squared error that is''', str(mean_squared_error(model.predict(x_test),y_test)), '''; the regression coefficients that are ''', model.coef_, '''.
         ''')
 
       if sel == 'BPM':
@@ -1029,6 +1074,7 @@ if sec == 'Predictive model for Season 2020/2021':
 
         st.write('''With this model we can predict the expected number of BPM, that is A box score estimate of the points provided by a player while playing.
         This model is quite well performed according to the R^2 score it has: ''', str(model.score(x_test, y_test)) , '''. To realize this regression, the dataset has been splitted using the comand train_test_split.
+        Other results from the model are: the mean squared error that is''', str(mean_squared_error(model.predict(x_test),y_test)), '''; the regression coefficients that are ''', model.coef_, '''.
         ''')
 
       if sel == 'WS':
@@ -1089,6 +1135,7 @@ if sec == 'Predictive model for Season 2020/2021':
 
         st.write('''With this model we can predict the expected number of WS, that is an estimate of the number of wins contributed by a player..
         This model is quite well performed according to the R^2 score it has: ''', str(model.score(x_test, y_test)) , '''. To realize this regression, the dataset has been splitted using the comand train_test_split.
+        Other results from the model are: the mean squared error that is''', str(mean_squared_error(model.predict(x_test),y_test)), '''; the regression coefficients that are ''', model.coef_, '''.
         ''')
 
       # si potrebbero aggiungere dei grafici
