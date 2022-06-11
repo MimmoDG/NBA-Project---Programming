@@ -1013,7 +1013,7 @@ if sec == 'Predictive model for Season 2020/2021':
         st.write('''With this model we can predict the expected value over replacement player, that is A box score estimate of the points per 100 TEAM possessions that a player contributed above a replacement-level (-2.0) player, translated to an average team and prorated to an 82-game season.
         Value over Replacement Player (VORP) converts the BPM rate into an estimate of each player's overall contribution to the team, measured vs. what a theoretical "replacement player" would provide, where the "replacement player" is defined as a player on minimum salary or not a normal member of a team's rotation.
         This model is quite well performed according to the R^2 score it has: ''', str(model.score(x_test, y_test)) , '''. To realize this regression, the dataset has been splitted using the comand train_test_split.
-        Other results from the model are: the mean squared error that is''', str(mean_squared_error(model.predict(x_test),y_test)), '''; the regression coefficients that are ''', model.coef_, '''.
+        Another result from the model is the mean squared error that is''', str(mean_squared_error(model.predict(x_test),y_test)), '''.
         ''')
 
       if sel == 'BPM':
@@ -1074,7 +1074,7 @@ if sec == 'Predictive model for Season 2020/2021':
 
         st.write('''With this model we can predict the expected number of BPM, that is A box score estimate of the points provided by a player while playing.
         This model is quite well performed according to the R^2 score it has: ''', str(model.score(x_test, y_test)) , '''. To realize this regression, the dataset has been splitted using the comand train_test_split.
-        Other results from the model are: the mean squared error that is''', str(mean_squared_error(model.predict(x_test),y_test)), '''; the regression coefficients that are ''', model.coef_, '''.
+        Another result from the model is the mean squared error that is''', str(mean_squared_error(model.predict(x_test),y_test)), '''.
         ''')
 
       if sel == 'WS':
@@ -1135,7 +1135,7 @@ if sec == 'Predictive model for Season 2020/2021':
 
         st.write('''With this model we can predict the expected number of WS, that is an estimate of the number of wins contributed by a player..
         This model is quite well performed according to the R^2 score it has: ''', str(model.score(x_test, y_test)) , '''. To realize this regression, the dataset has been splitted using the comand train_test_split.
-        Other results from the model are: the mean squared error that is''', str(mean_squared_error(model.predict(x_test),y_test)), '''; the regression coefficients that are ''', model.coef_, '''.
+        Another result from the model is the mean squared error that is''', str(mean_squared_error(model.predict(x_test),y_test)), '''.
         ''')
 
       # si potrebbero aggiungere dei grafici
