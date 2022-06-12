@@ -505,51 +505,74 @@ if sec == 'LeBron James exploration and analysis':
 if sec == 'Predictive model for LeBron James':
     st.header('Predictive model for LeBron James')
 
-    LeB_data = LeB_C_PG_RS[['Age', 'G', 'MP', 'FG%', '3P%', '2P%', 'FT%', 'PTS']]
-    x = LeB_data.drop(columns=['Age', 'PTS'])
-    y = LeB_data['PTS']
-    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=1)
+    selection = st.radio('Choose a Regression', ('Per Game', 'Totals'))
 
-    fig = plt.figure(figsize=(12, 10))
-    plt.subplot(111)
-    sb.heatmap(LeB_data.corr(), annot=True)
-    st.pyplot(fig)
+    if selection == 'Per Game':
+      LeB_data = LeB_C_PG_RS[['Age', 'G', 'MP', 'FG%', '3P%', '2P%', 'FT%', 'PTS']]
+      x = LeB_data.drop(columns=['Age', 'PTS'])
+      y = LeB_data['PTS']
+      x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=1)
 
-    model = LinearRegression().fit(x_train, y_train)
-    y_pred = model.predict(x_test)
+      fig = plt.figure(figsize=(12, 10))
+      plt.subplot(111)
+      sb.heatmap(LeB_data.corr(), annot=True)
+      st.pyplot(fig)
 
-    #variables to be setted for the prediction
-    st.write('Number of games played:')
-    games = st.slider('Slide me', min_value= 0, max_value=82, key=0)
-    st.write('Number of minutes played per game:')
-    mp = st.slider('Slide me', min_value= 0.0, max_value=42.0, key=1)
-    st.write('Field Goal Percentage:')
-    fgp = st.slider('Slide me', min_value= 0.0, max_value=1.0, key=2)
-    st.write('3 Point Percentage:')
-    tpp = st.slider('Slide me', min_value= 0.0, max_value=1.0, key=3)
-    st.write('2 Point Percentage:')
-    dpp = st.slider('Slide me', min_value= 0.0, max_value=1.0, key=4)
-    st.write('Free Throw Percentage:')
-    ftp = st.slider('Slide me', min_value= 0.0, max_value=1.0, key=5)
-    if st.button('Predict:'):
-      pts = model.predict(X=[[games, mp, fgp, tpp, dpp, ftp]])
-      age_lin_reg = ['38.0']
-      fig = plt.figure()
-      plt.scatter(LeB_data['Age'], y)
-      plt.scatter(age_lin_reg, pts, c='red')
-      plt.plot(LeB_data['Age'],y)
-      plt.plot(['37.0','38.0'], [LeB_data['PTS'][18], pts], c='red')
-      plt.xlabel("Age")
-      plt.ylabel("PTS")
-      plt.title('PTS trend')
-      st.write(fig)
-      st.write('The predicted number of points with these inputs, for LeBron James, is: ', str(list(pts)))
-      # sistema scatter plot
+      model = LinearRegression().fit(x_train, y_train)
+      y_pred = model.predict(x_test)
+
+      #variables to be setted for the prediction
+      st.write('Number of games played:')
+      games = st.slider('Slide me', min_value= 0, max_value=82, key=0)
+      st.write('Number of minutes played per game:')
+      mp = st.slider('Slide me', min_value= 0.0, max_value=42.0, key=1)
+      st.write('Field Goal Percentage:')
+      fgp = st.slider('Slide me', min_value= 0.0, max_value=1.0, key=2)
+      st.write('3 Point Percentage:')
+      tpp = st.slider('Slide me', min_value= 0.0, max_value=1.0, key=3)
+      st.write('2 Point Percentage:')
+      dpp = st.slider('Slide me', min_value= 0.0, max_value=1.0, key=4)
+      st.write('Free Throw Percentage:')
+      ftp = st.slider('Slide me', min_value= 0.0, max_value=1.0, key=5)
+      if st.button('Predict:'):
+        pts = model.predict(X=[[games, mp, fgp, tpp, dpp, ftp]])
+        age_lin_reg = ['38.0']
+        fig = plt.figure()
+        plt.scatter(LeB_data['Age'], y)
+        plt.scatter(age_lin_reg, pts, c='red')
+        plt.plot(LeB_data['Age'],y)
+        plt.plot(['37.0','38.0'], [LeB_data['PTS'][18], pts], c='red')
+        plt.xlabel("Age")
+        plt.ylabel("PTS")
+        plt.title('PTS trend')
+        st.write(fig)
+        st.write('The predicted number of points with these inputs, for LeBron James, is: ', str(list(pts)))
+        # sistema scatter plot
+      
+    if selection == 'Totals':
+      new_data = LeB_C_Tot_RS[['Age', 'G', 'MP', 'AST', 'TRB', 'BLK', 'STL', 'FG%', '3P%', '2P%', 'FT%', 'PTS']]
+      new_data['Tm Misc'] = [-12, 2, 22, 22, 8, 50, 40, 34, 26, 50, 26, 24, 32, 20, 18, -8, 33, 12, -16]
+      X_train, X_test, y_train, y_test = train_test_split(new_data.drop(columns='PTS'), new_data['PTS'], test_size=0.5)
+      
+      fig = plt.figure(figsize=(12, 10))
+      plt.subplot(111)
+      sb.heatmap(new_data.corr(), annot=True)
+      st.pyplot(fig)
+      
+      model_1 = st.selectbox('Choose a Regression', [LinearRegression, Lasso, Ridge])
+      model = model_1(fit_intercept=False).fit(x_train, y_train)
+      y_pred = model.predict(x_test)
+      
+      st.write('''As we can see, from this regression we obtain an R^2 equals to: ''', str(model.score(x_test, y_test)), '''.
+      Another result that we obtain is the list of the coefficients for the regression, that are: ''', str(model.coef_), '''.
+      ''')
+
 
 # sistemare lo scatter
 # guarda scatter plot F
 # mettere i modelli che ci sono sull'ipynb generici con la possibilità di scegliere la statistica da predire con anche la possibilità di mettere dei valori in input ecc
 # aggiungere altre due regressioni/previsioni, poi è finita questa parte
+# fatta una regressione per i totals, controllare se va, aggiungere qualcosa in più, poi dovrebbe essere a posto
 
 if sec == 'Season 2020/2021 exploration and analysis':
     st.header('Season 2020/2021 exploration and analysis')
