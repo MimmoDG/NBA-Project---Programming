@@ -44,7 +44,7 @@ for el in copy_LBJ_xGStats_df:
     copy_LBJ_xGStats_df[el] = pd.to_numeric(copy_LBJ_xGStats_df[el])
 
 LeB_C_PG_RS1 = copy_LBJ_xGStats_df.drop(labels=range(19, 24), axis=0)
-LeB_C_PG_RS = LeB_C_PG_RS1.drop(labels=['Lg', 'Season', 'GS'], axis=1)
+LeB_C_PG_RS = LeB_C_PG_RS1.drop(labels=['Lg', 'GS'], axis=1)
 
 # --> second dataset LeBron
 
@@ -53,7 +53,7 @@ for el in copy_LBJ_TotStats_df:
     copy_LBJ_TotStats_df[el] = pd.to_numeric(copy_LBJ_TotStats_df[el])
 
 LeB_C_Tot_RS1 = copy_LBJ_TotStats_df.drop(labels=range(19, 24), axis=0)
-LeB_C_Tot_RS = LeB_C_Tot_RS1.drop(labels=['Lg', 'Season', 'GS', 'Unnamed: 30', 'Trp Dbl'], axis=1)
+LeB_C_Tot_RS = LeB_C_Tot_RS1.drop(labels=['Lg', 'GS', 'Unnamed: 30', 'Trp Dbl'], axis=1)
 
 # --> first dataset season 2020/21
 
@@ -228,7 +228,7 @@ if sec == 'Data cleaning':
           st.write(''' For the 'Per Game' stats are been made few changes: 
           The first one change all the stats that are tipically numeric, but initially stored as object, from object to numeric datatype. 
           Secondly, are deleted the summary rows containing the whole career and the different teams he played for.
-          Lastly, are deleted three variables that are not significant for the analysis or redundant: Season, GS and Lg.
+          Lastly, are deleted three variables that are not significant for the analysis or redundant: GS and Lg.
           ''')
           st.write(''' Here is attached a description of the variables with the main percentiles, the mean and the count.
           With this description is easier to analize the data for the analysis.
@@ -239,7 +239,7 @@ if sec == 'Data cleaning':
           st.write(''' As for the first dataset, also for the 'Totals' stats haven't been made a lot of changes:
           As for the previous dataset the first step is about the datatype of the different stats, changing it from object to numeric.
           Also the second step is equal, with the deletion of the summary rows.
-          The third and last step is different from the 'Per Game' dataset, in fact in it are deleted some variables not so significant for the analysis and those are: Season, GS, Lg, Unnamed: 30 and Trp Dbl.
+          The third and last step is different from the 'Per Game' dataset, in fact in it are deleted some variables not so significant for the analysis and those are: GS, Lg, Unnamed: 30 and Trp Dbl.
           ''')
           st.write(''' Here is attached a description of the variables with the main percentiles, the mean and the count.
           With this description is easier to analize the data for the analysis.
@@ -277,7 +277,6 @@ if sec == 'Data cleaning':
           ''')
           st.dataframe(Adv_Stats_1.describe()) 
         
-# mettere nelle singole sezioni le sotto tabelline fatte ma non nella parte di data cleaning dato che non sono salvataggi
 
 if sec == 'LeBron James exploration and analysis':
     st.header('LeBron James exploration and analysis')
@@ -365,7 +364,7 @@ if sec == 'LeBron James exploration and analysis':
     There are four outputs because the cavs experience is splitted in two parts according to direct succession of the team change made by him.
     He was drafted by Cavs then he went to Heat and after this experience he came back to Cavs and after four years he went to Lakers where he still is. 
     ''')
-    stat = st.selectbox('Choose a Stat', LeB_C_PG_RS.columns.drop(['Season', 'Tm', 'Pos']).tolist(), key=3)
+    stat = st.selectbox('Choose a Stat', LeB_C_PG_RS.columns.drop(['Season', 'Age', 'Tm', 'Pos']).tolist(), key=3)
     df = LeB_C_PG_RS.groupby(by='Tm').mean()
     st.dataframe(df[stat])
 
@@ -389,7 +388,7 @@ if sec == 'LeBron James exploration and analysis':
     st.write(''' From this pie chart we can see that he played the most time of his career as SF, but anyway he changed many roles, showing how he is versatile.
     Now we will analyse the mean of his statistics accordingly to the role he played that season showing how he changed his trends also because of the role.
     ''')
-    stat = st.selectbox('Choose a Stat', LeB_C_PG_RS.columns.drop(['Season', 'Tm', 'Pos']).tolist(), key=4)
+    stat = st.selectbox('Choose a Stat', LeB_C_PG_RS.columns.drop(['Season', 'Age', 'Tm', 'Pos']).tolist(), key=4)
     df = LeB_C_PG_RS.groupby(by='Pos').mean()
     st.dataframe(df[stat])
     
@@ -442,7 +441,7 @@ if sec == 'LeBron James exploration and analysis':
     selection = st.radio('Choose a dataset', ('Per Game Stats', 'Totals Stats'))
 
     if selection == 'Per Game Stats':
-      x = st.selectbox('Choose a Stat', LeB_C_PG_RS.columns.drop(['Season', 'Tm', 'Pos']).tolist(), key=0)
+      x = st.selectbox('Choose a Stat', LeB_C_PG_RS.columns.drop(['Season', 'Age', 'Tm', 'Pos']).tolist(), key=0)
 
       y = st.selectbox('Choose a feature', ['Max', 'Min', 'Mean'], key=1)
 
@@ -472,7 +471,7 @@ if sec == 'LeBron James exploration and analysis':
 
     
     if selection == 'Totals Stats':
-      x = st.selectbox('Choose a Stat', LeB_C_Tot_RS.columns.drop(['Season', 'Tm', 'Pos']).tolist(), key=0)
+      x = st.selectbox('Choose a Stat', LeB_C_Tot_RS.columns.drop(['Season', 'Age', 'Tm', 'Pos']).tolist(), key=0)
 
       y = st.selectbox('Choose a feature', ['Max', 'Min', 'Mean'], key=1)
 
@@ -524,7 +523,7 @@ if sec == 'Predictive model for LeBron James':
       st.write('Number of games played:')
       games = st.slider('Slide me', min_value= 0, max_value=82, key=0)
       st.write('Number of minutes played per game:')
-      mp = st.slider('Slide me', min_value= 0.0, max_value=42.0, key=1)
+      mp = st.slider('Slide me', min_value= 0.0, max_value=48.0, key=1)
       st.write('Field Goal Percentage:')
       fgp = st.slider('Slide me', min_value= 0.0, max_value=1.0, key=2)
       st.write('3 Point Percentage:')
@@ -557,7 +556,7 @@ if sec == 'Predictive model for LeBron James':
       if regression == 'First':
         new_data = LeB_C_Tot_RS[['Age', 'G', 'MP', 'AST', 'TRB', 'BLK', 'STL', 'PTS']]
         new_data['Tm Misc'] = [-12, 2, 22, 22, 8, 50, 40, 34, 26, 50, 26, 24, 32, 20, 18, -8, 33, 12, -16]
-        x = new_data.drop(columns='PTS')
+        x = new_data.drop(columns=['Age', 'PTS'])
         y = new_data['PTS']
         x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=1)
         
@@ -566,13 +565,46 @@ if sec == 'Predictive model for LeBron James':
         sb.heatmap(new_data.corr(), annot=True)
         st.pyplot(fig)
         
-        model_1 = st.selectbox('Choose a Regression model', [LinearRegression, Lasso, Ridge])
-        model = model_1(fit_intercept=False).fit(x_train, y_train)
+        model_1 = st.selectbox('Choose a Regression model', [LinearRegression, Lasso, Ridge, RandomForestRegressor])
+        if model_1 == RandomForestRegressor:
+          model = model_1(random_state=1).fit(x_train, y_train)
+        else:
+          model = model_1(fit_intercept=False).fit(x_train, y_train)
         y_pred = model.predict(x_test)
+
+        #variables to be setted for the prediction
+        st.write('Number of games played:')
+        games = st.slider('Slide me', min_value= 0, max_value=82, key=0)
+        st.write('Number of minutes played per game:')
+        mp = st.slider('Slide me', min_value= 0.0, max_value=48.0, key=1)
+        st.write('Number of assist made in total season:')
+        ast = st.slider('Slide me', min_value= 0, max_value=900, key=2)
+        st.write('Number of rebounds made in total season:')
+        trb = st.slider('Slide me', min_value= 0, max_value=900, key=3)
+        st.write('Number of blocks made in total season:')
+        blk = st.slider('Slide me', min_value= 0, max_value= 100, key=4)
+        st.write('Number of steels made in total season:')
+        stl = st.slider('Slide me', min_value= 0, max_value= 200, key=5)
+        st.write('Team Miscellaneous per season:')
+        tm_misc = st.slider('Slide me', min_value= -82, max_value= 82, key=6)
+        if st.button('Predict:'):
+          pts = model.predict(X=[[games, mp, ast, trb, blk, stl, tm_misc]])
+          age_lin_reg = [38.0]
+          fig = plt.figure()
+          plt.scatter(new_data['Age'], y)
+          plt.scatter(age_lin_reg, pts, c='red')
+          plt.plot(new_data['Age'],y)
+          plt.plot([37.0,38.0], [new_data['PTS'][18], pts], c='red')
+          plt.xlabel("Age")
+          plt.ylabel("PTS")
+          plt.title('PTS trend')
+          st.write(fig)
+          st.write('The predicted number of points with these inputs, for LeBron James, is: ', str(list(pts)), '''. 
+          With this number of point he will overcome the record of Kareem Abdul Jabbar, because he has to do at least 1325 points.
+          ''')
         
         st.write('''We realise the regression with ''', str(list(new_data.drop(columns='PTS').columns)), 
         ''' trying to estimate the number of points realised by . As we can see, from this regression we obtain an R^2 equals to: ''', str(model.score(x_test, y_test)), '''.
-        Another result that we obtain is the list of the coefficients for the regression, that are: ''', str(model.coef_), '''.
         ''')
       
       if regression == 'Second':
@@ -600,11 +632,11 @@ if sec == 'Predictive model for LeBron James':
         st.write('Number of games played:')
         games = st.slider('Slide me', min_value= 0, max_value=82, key=0)
         st.write('Number of minutes played per game:')
-        mp = st.slider('Slide me', min_value= 0.0, max_value=42.0, key=1)
+        mp = st.slider('Slide me', min_value= 0.0, max_value=48.0, key=1)
         st.write('Number of assist made in total season:')
-        ast = st.slider('Slide me', min_value= 300, max_value=800, key=2)
+        ast = st.slider('Slide me', min_value= 0, max_value=900, key=2)
         st.write('Number of rebounds made in total season:')
-        trb = st.slider('Slide me', min_value= 300, max_value=800, key=3)
+        trb = st.slider('Slide me', min_value= 0, max_value=900, key=3)
         st.write('Field Goal Percentage:')
         fgp = st.slider('Slide me', min_value= 0.0, max_value=1.0, key=4)
         st.write('3 Point Percentage:')
@@ -629,13 +661,6 @@ if sec == 'Predictive model for LeBron James':
           With this number of point he will overcome the record of Kareem Abdul Jabbar, because he has to do at least 1325 points.
           ''')
         
-
-
-# sistemare lo scatter
-# guarda scatter plot F
-# mettere i modelli che ci sono sull'ipynb generici con la possibilità di scegliere la statistica da predire con anche la possibilità di mettere dei valori in input ecc
-# aggiungere altre due regressioni/previsioni, poi è finita questa parte
-# fatta una regressione per i totals, controllare se va, aggiungere qualcosa in più, poi dovrebbe essere a posto
 
 if sec == 'Season 2020/2021 exploration and analysis':
     st.header('Season 2020/2021 exploration and analysis')
@@ -725,9 +750,6 @@ if sec == 'Season 2020/2021 exploration and analysis':
 
       most_FGA = xG_Stats_1.sort_values(by='FGA', ascending=False)[['Player', 'FG', 'FGA', '3P', '3PA', '2P', '2PA', 'FT', 'FTA']]
       most_FGA.set_index('Player', inplace=True)
-      #Var1_chosen = st.selectbox('Choose a Percentile', most_FGA[['FG', '3P', '2P', 'FT']], key=2)
-      #Var2_chosen = st.selectbox('Choose a Percentile', most_FGA[['FGA', '3PA', '2PA', 'FTA']], key=3)
-      #most_FGA['ACCURACY'] = most_FGA[Var1_chosen] / most_FGA[Var2_chosen]
       most_FGA['ACCURACY'] = most_FGA['FG'] / most_FGA['FGA']
       most_accurate_mask = most_FGA['ACCURACY'] == most_FGA['ACCURACY'].max()
       n = st.slider('Choose a number of shots', min_value=0, max_value=23)
@@ -794,7 +816,6 @@ if sec == 'Season 2020/2021 exploration and analysis':
       plt.xticks(rotation=90)
       st.pyplot(fig)
       
-      #altre cose con per game dataset
 
     if selection == 'Advanced stats dataset':
 
@@ -947,7 +968,6 @@ if sec == 'Season 2020/2021 exploration and analysis':
       plt.xticks(rotation=90)
       st.pyplot(fig)
 
-      #altre cose con advanced dataset
 
 if sec == 'Predictive model for Season 2020/2021':
     st.header('Predictive model for Season 2020/2021')
@@ -986,7 +1006,7 @@ if sec == 'Predictive model for Season 2020/2021':
       st.write('Number of total rebound per game:')
       second = st.slider('Slide me', min_value= 0.0, max_value=20.0, key=1)
       st.write('Number of minutes played per game:')
-      third = st.slider('Slide me', min_value= 0.0, max_value=42.0, key=2)
+      third = st.slider('Slide me', min_value= 0.0, max_value=48.0, key=2)
       st.write('Number of blocks per game:')
       fourth = st.slider('Slide me', min_value= 0.0, max_value=8.0, key=3)
       st.write('Number of steels per game:')
@@ -1020,12 +1040,11 @@ if sec == 'Predictive model for Season 2020/2021':
         st.write('The predicted number of points with these inputs is: ', str(list(pts)))
 
         Avg_role = xG_data[xG_data['Pos'] == dummy]['PTS'].mean()
-        st.metric('PTS', pts, '{}% (respect the average PTS per role)'.format(float(pts-Avg_role)/Avg_role))
+        st.metric('PTS', round(float(pts), 2), '{}% (respect the average PTS per role)'.format(float(pts-Avg_role)/Avg_role))
       
       st.write('''With this model we can predict the expected number of points realized by a player according to setted values for the statistics.
       This model is quite well performed according to the R^2 score it has: ''', str(model.score(x_test, y_test)) , '''. To realize this regression, ''', str(model_1), ''' has been used and the dataset has been splitted using the comand train_test_split.
       ''')
-
 
     if selection == 'Advanced stats dataset':
 
@@ -1094,7 +1113,7 @@ if sec == 'Predictive model for Season 2020/2021':
           st.write('The predicted value over replacement player with these inputs is: ', str(list(vorp)))
 
           Avg_role = Adv_data[Adv_data['Pos'] == dummy]['VORP'].mean()
-          st.metric('VORP', vorp, '{}% (respect the average VORP per role)'.format(float(vorp-Avg_role)/Avg_role))
+          st.metric('VORP', round(float(vorp), 2), '{}% (respect the average VORP per role)'.format(float(vorp-Avg_role)/Avg_role))
         
         st.write('''With this model we can predict the expected value over replacement player, that is A box score estimate of the points per 100 TEAM possessions that a player contributed above a replacement-level (-2.0) player, translated to an average team and prorated to an 82-game season.
         Value over Replacement Player (VORP) converts the BPM rate into an estimate of each player's overall contribution to the team, measured vs. what a theoretical "replacement player" would provide, where the "replacement player" is defined as a player on minimum salary or not a normal member of a team's rotation.
@@ -1159,7 +1178,7 @@ if sec == 'Predictive model for Season 2020/2021':
           st.write('The predicted value over replacement player with these inputs is: ', str(list(bpm)))
 
           Avg_role = data[data['Pos'] == dummy]['BPM'].mean()
-          st.metric('BPM', bpm, '{}% (respect the average BPM per role)'.format(float(bpm-Avg_role)/Avg_role))
+          st.metric('BPM', round(float(bpm), 2), '{}% (respect the average BPM per role)'.format(float(bpm-Avg_role)/Avg_role))
 
         st.write('''With this model we can predict the expected number of BPM, that is A box score estimate of the points provided by a player while playing.
         This model is quite well performed according to the R^2 score it has: ''', str(model.score(x_test, y_test)) , '''. To realize this regression, the dataset has been splitted using the comand train_test_split.
@@ -1223,7 +1242,7 @@ if sec == 'Predictive model for Season 2020/2021':
           st.write('The predicted value over replacement player with these inputs is: ', str(list(ws)))
 
           Avg_role = data[data['Pos'] == dummy]['WS'].mean()
-          st.metric('WS', ws, '{}% (respect the average WS per role)'.format(float(ws-Avg_role)/Avg_role))
+          st.metric('WS', round(float(ws), 2), '{}% (respect the average WS per role)'.format(float(ws-Avg_role)/Avg_role))
         
         st.write('''With this model we can predict the expected number of WS, that is an estimate of the number of wins contributed by a player..
         This model is quite well performed according to the R^2 score it has: ''', str(model.score(x_test, y_test)) , '''. To realize this regression, the dataset has been splitted using the comand train_test_split.
