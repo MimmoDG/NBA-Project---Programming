@@ -8,7 +8,9 @@ More specifically, the aim is the exploration of two topics, having two datasets
 
 I will use different datasets in order to reach different goals.
 First of all, I will analyze two datasets about LeBron James with the goal of studying his career trends and predict some interesting stats about him, like in how many matches he will overpass the current 'All-time Points Leader', Kareem Abdul Jabbar and other stats he might reach until he will end his career.
-The second main goal is to study and find some interesting stats or infos about the 2020/2021 Season using the 'Per Game' and 'Advanced' Stats, for example the difference  in the +/- according to the role and establish a kind of trend marked.
+The second main goal is to study and find some interesting stats or infos about the 2020/2021 Season using the 'Per Game' and 'Advanced' Stats, for example the difference  in the +/- according to the role and other variables to establish a kind of trend marked.
+
+In the folder are present all the database used and also the ipynb and the py file where the project is implemented.
 
 To present the project I will use streamlit, in order to give a precisely way to see and comprehend the work done and the results obtained. 
 

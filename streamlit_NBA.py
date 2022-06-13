@@ -5,16 +5,11 @@ import seaborn as sb
 import streamlit as st
 import sklearn as sk
 from sklearn.model_selection import train_test_split
-from sklearn.tree import DecisionTreeRegressor
 import sklearn.metrics as skm
 from sklearn import linear_model
 from sklearn.linear_model import LinearRegression
 from sklearn.linear_model import Lasso
 from sklearn.linear_model import Ridge
-from sklearn.linear_model import LassoCV
-from sklearn.linear_model import RidgeCV
-from sklearn import cluster
-from sklearn.cluster import KMeans
 import streamlit_option_menu as som
 from sklearn.metrics import mean_squared_error
 from sklearn.ensemble import RandomForestRegressor
