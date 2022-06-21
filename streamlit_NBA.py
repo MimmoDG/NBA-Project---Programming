@@ -85,7 +85,7 @@ final_LBJ_Tot_df = pd.read_csv('df_LBJ_Tot_Stats_final.csv')
 
 Adv_Stats_1_df = pd.read_csv('Adv_Stats_1.csv')
 xG_Stats_1_df = pd.read_csv('xG_Stats_1.csv')
-LeBron_Injuries_df = pd.read_csv('LeBron_Injuries.csv')
+#LeBron_Injuries_df = pd.read_csv('LeBron_Injuries.csv')
 
 st.title('NBA Project: Analysis and Prediction about LeBron James Career and Season 2020/2021')
 
